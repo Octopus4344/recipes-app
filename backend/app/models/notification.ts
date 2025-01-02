@@ -5,7 +5,7 @@ import User from '#models/user'
 
 export default class Notification extends BaseModel {
   @column({ isPrimary: true })
-  declare fk_message: number
+  declare fk_message: number //yeah it should be string (but I am not touching that because I can mess things up for now sowwy)
 
   @column()
   declare fk_user: number
