@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import QueryProvider from "@/lib/queryClient";
+import { UserProvider } from "@/context/UserContext";
+import { Navbar } from "@/components/navbar";
 
 
 export const metadata: Metadata = {
@@ -16,10 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en">
     <QueryProvider>
-      <body
+      <UserProvider>
+      <body className="mt-8 "
       >
+      <Navbar />
         {children}
       </body>
+      </UserProvider>
     </QueryProvider>
     </html>
   );

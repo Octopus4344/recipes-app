@@ -1,5 +1,61 @@
 export default function Home() {
   return (
+    <div className="flex flex-col">
     <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    <div>Main page</div>
+    </div>
   );
 }
