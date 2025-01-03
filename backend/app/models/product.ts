@@ -13,10 +13,10 @@ export default class Product extends BaseModel {
   declare name: string
 
   @column()
-  declare image_url: string
+  declare imageUrl: string
 
   @column()
-  declare fk_producer_id: number
+  declare producerId: number
 
   @column()
   declare isActive: boolean

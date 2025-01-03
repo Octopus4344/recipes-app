@@ -8,10 +8,10 @@ export default class Favourite extends BaseModel {
   declare id: number
 
   @column()
-  declare fk_amator_id: number
+  declare amatorId: number
 
   @column()
-  declare fk_recipe_id: number
+  declare recipeId: number
 
   @belongsTo(() => User, {
     foreignKey: 'fk_amator_id',

@@ -8,10 +8,10 @@ export default class NutritionalProfile extends BaseModel {
   declare id: number
 
   @column()
-  declare fk_amator_id: number
+  declare amatorId: number
 
   @column()
-  declare fk_category_id: number
+  declare categoryId: number
 
   @belongsTo(() => User, {
     foreignKey: 'fk_amator_id',

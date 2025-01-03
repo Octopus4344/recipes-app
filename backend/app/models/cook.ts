@@ -9,16 +9,16 @@ export default class Cook extends BaseModel {
   declare id: number
 
   @column()
-  declare first_name: string
+  declare firstName: string
 
   @column()
-  declare last_name: string
+  declare lastName: string
 
   @column()
-  declare fk_user_id: number
+  declare userId: number
 
   @column()
-  declare fk_restaurant_id: number | null
+  declare restaurantId: number | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

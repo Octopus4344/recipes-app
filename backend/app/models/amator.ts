@@ -11,16 +11,16 @@ export default class Amator extends BaseModel {
   declare id: number
 
   @column()
-  declare first_name: string
+  declare firstName: string
 
   @column()
-  declare last_name: string
+  declare lastName: string
 
   @column()
   declare points: number
 
   @column()
-  declare fk_user_id: number
+  declare userId: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

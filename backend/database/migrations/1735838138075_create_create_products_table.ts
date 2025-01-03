@@ -14,7 +14,7 @@ export default class Products extends BaseSchema {
         .references('id')
         .inTable('food_producers')
         .onDelete('CASCADE')
-      table.boolean('isActive').notNullable()
+      table.boolean('is_active').notNullable()
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })

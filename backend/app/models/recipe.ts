@@ -17,19 +17,19 @@ export default class Recipe extends BaseModel {
   declare description: string
 
   @column()
-  declare preparation_time: number
+  declare preparationTime: number
 
   @column()
-  declare difficulty_level: number
+  declare difficultyLevel: number
 
   @column()
   declare isProfessional: boolean
 
   @column()
-  declare image_url: string
+  declare imageUrl: string | null
 
   @column()
-  declare fk_user_id: number
+  declare userId: number | null
 
   @column()
   declare isActive: boolean

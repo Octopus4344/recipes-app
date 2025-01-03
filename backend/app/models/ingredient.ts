@@ -12,13 +12,13 @@ export default class Ingredient extends BaseModel {
   declare name: string
 
   @column()
-  declare calorific_value: number
+  declare calorificValue: number
 
   @column()
-  declare fk_recipe_id: number
+  declare recipeId: number
 
   @column()
-  declare fk_product_id: number
+  declare productId: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

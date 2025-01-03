@@ -1,12 +1,14 @@
 import vine from '@vinejs/vine'
 
-export const updateRecipeValidator = vine.compile(
-  vine.object({
-    name: vine.string(),
-    description: vine.string(),
-    preparation_time: vine.number(),
-    difficulty_level: vine.number().decimal([1, 5]),
-    image_url: vine.string(),
-    fk_user_id: vine.number().positive(),
-  })
-)
+const recipeSchema = vine.object({
+  name: vine.string(),
+  description: vine.string(),
+  preparationTime: vine.number(),
+  difficultyLevel: vine.number(),
+  isProfessional: vine.boolean(),
+  isActive: vine.boolean(),
+  imageUrl: vine.string().nullable(),
+  userId: vine.number().optional(),
+})
+
+export const updateRecipeValidator = vine.compile(recipeSchema)

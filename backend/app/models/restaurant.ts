@@ -20,10 +20,10 @@ export default class Restaurant extends BaseModel {
   declare street: string
 
   @column()
-  declare street_number: number
+  declare streetNumber: number
 
   @column()
-  declare fk_user_id: number
+  declare userId: number
 
   @column()
   declare description: string | null

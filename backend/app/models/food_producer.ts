@@ -12,7 +12,7 @@ export default class FoodProducer extends BaseModel {
   declare name: string
 
   @column()
-  declare fk_user_id: number
+  declare userId: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
