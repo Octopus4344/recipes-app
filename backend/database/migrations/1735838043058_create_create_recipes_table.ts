@@ -10,7 +10,7 @@ export default class Recipes extends BaseSchema {
       table.text('description').notNullable()
       table.integer('preparation_time').notNullable()
       table.integer('difficulty_level').notNullable()
-      table.boolean('isProffessional').notNullable()
+      table.boolean('isProffessional').notNullable() //typo: isProfessional (but i am not messing with that)
       table.string('image_url').notNullable()
       table.integer('fk_user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.boolean('isActive').notNullable()

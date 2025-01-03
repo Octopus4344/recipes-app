@@ -23,7 +23,7 @@ export default class Recipe extends BaseModel {
   declare difficulty_level: number
 
   @column()
-  declare isProffessional: boolean
+  declare isProffessional: boolean //typo: isProfessional (but i am not messing with that)
 
   @column()
   declare image_url: string
