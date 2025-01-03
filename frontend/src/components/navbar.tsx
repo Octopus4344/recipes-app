@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/context/user-context";
 import { usePathname } from "next/navigation";
 
 export function Navbar() {
@@ -10,20 +10,26 @@ export function Navbar() {
 
   const isActive = (path: string) => currentPath === path ? 'text-primary' : 'hover:text-gray-600';
 
-  // if (!user) {
+  // if (!user || currentPath === 'login' || currentPath === 'register') {
   //   return (
-  //     <div>Zaloguj się</div>
+  //     <div/>
   // )
   // }
 
+  if (currentPath === "/login" || currentPath === "/register") {
+    return (
+      <div />
+    );
+  }
+
   return (
     <div>
-      <nav className="navbar fixed top-0 left-0 w-full navbar-expand-lg navbar-dark bg-white px-16 py-4 z-10">
+      <nav className="navbar fixed top-0 left-0 w-full navbar-expand-lg navbar-dark bg-white px-16 xl:px-24 py-4 z-10">
         <div className="flex justify-between items-center text-l text-black w-full">
           <Link href="/">
             <Image alt="CookKing app logo" src="/logo.svg" width={60} height={60} />
           </Link>
-          <div className="flex flex-wrap items-center space-x-10 left-3">
+          <div className="flex flex-wrap items-center space-x-10 xl:space-x-24 left-3">
             <Link className={isActive("/")} href="/">Home</Link>
             <Link className={isActive("/favourites")} href="/favourites">Favourites</Link>
             {user?.role === "amateur" ? (

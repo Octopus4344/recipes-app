@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import QueryProvider from "@/lib/queryClient";
-import { UserProvider } from "@/context/UserContext";
+import { UserProvider } from "@/context/user-context";
 import { Navbar } from "@/components/navbar";
 
 
