@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo, hasMany, manyToMany } from '@adonisjs/lucid/orm'
 import type { HasMany, BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
 import User from '#models/user'
-import Review from '#models/review'
+import Review from '#models/message'
 import Favourite from '#models/favourite'
 import Category from '#models/category'
 
