@@ -11,14 +11,14 @@ export default class FoodPackage extends BaseModel {
 
   @manyToMany(() => Product, {
     localKey: 'id',
-    pivotForeignKey: 'product_id',
+    pivotForeignKey: 'fk_package_id', // widać było późno robione, że się dwa razy product pojawił :P
     relatedKey: 'id',
-    pivotRelatedForeignKey: 'product_id',
+    pivotRelatedForeignKey: 'fk_product_id', 
     pivotTable: 'food_packages_products',
     pivotTimestamps: true,
   })
   declare groups: ManyToMany<typeof Product>
 
-  @column()
-  declare fk_producer_id: number
+  @column({ columnName: 'fk_producer_id' }) 
+  declare producerId: number
 }

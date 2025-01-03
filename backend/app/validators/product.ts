@@ -2,8 +2,8 @@ import vine from '@vinejs/vine'
 
 const productSchema = vine.object({
   name: vine.string(),
-  imageUrl: vine.string().optional(),
-  producerId: vine.number().positive(),
+  imageUrl: vine.string(),
+  producerId: vine.number(),
   isActive: vine.boolean(),
 })
 

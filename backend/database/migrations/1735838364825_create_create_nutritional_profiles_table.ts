@@ -4,6 +4,7 @@ export default class NutritionalProfiles extends BaseSchema {
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
+      table.increments('id').primary()
       table
         .integer('fk_amator_id')
         .unsigned()
@@ -16,7 +17,6 @@ export default class NutritionalProfiles extends BaseSchema {
         .references('id')
         .inTable('categories')
         .onDelete('CASCADE')
-      table.primary(['fk_amator_id', 'fk_category_id'])
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })

@@ -14,10 +14,10 @@ export default class Ingredient extends BaseModel {
   @column()
   declare calorificValue: number
 
-  @column()
+  @column({ columnName: 'fk_recipe_id' })
   declare recipeId: number
 
-  @column()
+  @column({ columnName: 'fk_product_id' })
   declare productId: number
 
   @column.dateTime({ autoCreate: true })

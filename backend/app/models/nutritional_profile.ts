@@ -7,10 +7,10 @@ export default class NutritionalProfile extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
-  @column()
+  @column({ columnName: 'fk_amator_id' })
   declare amatorId: number
 
-  @column()
+  @column({ columnName: 'fk_category_id' })
   declare categoryId: number
 
   @belongsTo(() => User, {

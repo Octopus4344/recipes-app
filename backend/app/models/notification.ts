@@ -10,7 +10,7 @@ export default class Notification extends BaseModel {
   @column()
   declare content: string
 
-  @column()
+  @column({ columnName: 'fk_user_id' })
   declare userId: number
 
   @column.dateTime({ autoCreate: true })

@@ -14,10 +14,10 @@ export default class Review extends BaseModel {
   @column()
   declare review: string
 
-  @column()
+  @column({ columnName: 'fk_amator_id' }) 
   declare amatorId: number
 
-  @column()
+  @column({ columnName: 'fk_recipe_id' }) 
   declare recipeId: number
 
   @column.dateTime({ autoCreate: true })

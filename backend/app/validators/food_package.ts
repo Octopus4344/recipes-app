@@ -2,7 +2,7 @@ import vine from '@vinejs/vine'
 
 const foodPackageValidatorSchema = vine.object({
   name: vine.string(),
-  fkProducerId: vine.number(),
+  producerId: vine.number(),
 })
 
 export const updateFoodPackageValidator = vine.compile(foodPackageValidatorSchema)

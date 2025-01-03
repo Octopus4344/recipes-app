@@ -8,7 +8,7 @@ const recipeSchema = vine.object({
   isProfessional: vine.boolean(),
   isActive: vine.boolean(),
   imageUrl: vine.string().nullable(),
-  userId: vine.number().optional(),
+  userId: vine.number().nullable(),
 })
 
 export const updateRecipeValidator = vine.compile(recipeSchema)

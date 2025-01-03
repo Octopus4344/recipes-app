@@ -11,7 +11,7 @@ export default class FoodProducer extends BaseModel {
   @column()
   declare name: string
 
-  @column()
+  @column({ columnName: 'fk_user_id' }) 
   declare userId: number
 
   @column.dateTime({ autoCreate: true })
