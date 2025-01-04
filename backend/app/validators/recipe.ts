@@ -7,7 +7,7 @@ const recipeSchema = vine.object({
   difficultyLevel: vine.number().in([1, 2, 3, 4, 5]),
   isProfessional: vine.boolean(),
   isActive: vine.boolean(),
-  imageUrl: vine.string().nullable(),
+  imageUrl: vine.string().optional(),
   userId: vine.number().optional(),
 })
 

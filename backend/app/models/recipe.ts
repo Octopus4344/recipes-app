@@ -57,5 +57,5 @@ export default class Recipe extends BaseModel {
     pivotTable: 'tags',
     pivotTimestamps: true,
   })
-  declare groups: ManyToMany<typeof Category>
+  declare tags: ManyToMany<typeof Category>
 }

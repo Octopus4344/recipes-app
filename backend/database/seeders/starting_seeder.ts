@@ -267,21 +267,15 @@ export default class extends BaseSeeder {
       },
     ])
 
-    await recipes[0]
-      .related('groups')
-      .attach([categories[0].id, categories[4].id, categories[5].id]) // Makaron z pesto
-    await recipes[1]
-      .related('groups')
-      .attach([categories[3].id, categories[4].id, categories[5].id]) // Brownie
+    await recipes[0].related('tags').attach([categories[0].id, categories[4].id, categories[5].id]) // Makaron z pesto
+    await recipes[1].related('tags').attach([categories[3].id, categories[4].id, categories[5].id]) // Brownie
     await recipes[2]
-      .related('groups')
+      .related('tags')
       .attach([categories[2].id, categories[4].id, categories[9].id, categories[5].id]) // Jajecznica
-    await recipes[3].related('groups').attach([categories[1].id, categories[9].id]) // Kotlet schabowy
-    await recipes[4].related('groups').attach([categories[1].id, categories[4].id]) // Kurczak curry
-    await recipes[5]
-      .related('groups')
-      .attach([categories[3].id, categories[4].id, categories[5].id]) // Tarta z malinami
-    await recipes[6].related('groups').attach([categories[1].id, categories[4].id]) // Łosoś z sosem bois boudran
+    await recipes[3].related('tags').attach([categories[1].id, categories[9].id]) // Kotlet schabowy
+    await recipes[4].related('tags').attach([categories[1].id, categories[4].id]) // Kurczak curry
+    await recipes[5].related('tags').attach([categories[3].id, categories[4].id, categories[5].id]) // Tarta z malinami
+    await recipes[6].related('tags').attach([categories[1].id, categories[4].id]) // Łosoś z sosem bois boudran
 
     await Ingredient.createMany([
       {
@@ -435,7 +429,7 @@ export default class extends BaseSeeder {
       },
     ])
 
-    packages[0].related('groups').attach([products[0].id, products[1].id])
+    packages[0].related('products').attach([products[0].id, products[1].id])
 
     await NutritionalProfile.createMany([
       {
