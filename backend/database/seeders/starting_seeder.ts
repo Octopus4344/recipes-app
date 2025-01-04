@@ -5,6 +5,7 @@ import Favourite from '#models/favourite'
 import FoodPackage from '#models/food_package'
 import FoodProducer from '#models/food_producer'
 import Ingredient from '#models/ingredient'
+import Notification from '#models/notification'
 import NutritionalProfile from '#models/nutritional_profile'
 import Product from '#models/product'
 import Recipe from '#models/recipe'
@@ -16,97 +17,99 @@ import { BaseSeeder } from '@adonisjs/lucid/seeders'
 export default class extends BaseSeeder {
   async run() {
     const users = await User.createMany([
-        {
-          username: 'Dodi',
-          password: 'Jasnysmokens!',
-        },
+      {
+        username: 'Dodi',
+        password: 'Jasnysmokens!',
+      },
 
-        {
-          username: 'OctopusMarcopus',
-          password: 'Aramek123',
-        },
+      {
+        username: 'OctopusMarcopus',
+        password: 'Aramek123',
+      },
 
-        {
-          username: 'JasnySmokens',
-          password: 'D00di!',
-        },
+      {
+        username: 'JasnySmokens',
+        password: 'D00di!',
+      },
 
-        {
-          username: 'AsiaGotuje',
-          password: 'password',
-        },
+      {
+        username: 'AsiaGotuje',
+        password: 'password',
+      },
 
-        {
-          username: 'Paei3000',
-          password: 'KochamGotowac',
-        },
+      {
+        username: 'Paei3000',
+        password: 'KochamGotowac',
+      },
 
-        {
-          username: 'Solvro',
-          password: 'solvroznowugotuje',
-        },
+      {
+        username: 'Solvro',
+        password: 'solvroznowugotuje',
+      },
 
-        {
-          username: 'RopuchaOfficial',
-          password: 'jakaparuwawariacie',
-        },
+      {
+        username: 'RopuchaOfficial',
+        password: 'jakaparuwawariacie',
+      },
 
-        {
-          username: 'KucharzMichelle',
-          password: 'michelle123',
-        },
-      ])
+      {
+        username: 'KucharzMichelle',
+        password: 'michelle123',
+      },
+    ])
 
     const amators = await Amator.createMany([
-        {
-          firstName: 'Marcin',
-          lastName: 'Dodi',
-          points: 2100,
-          userId: users[0].id,
-        },
+      {
+        firstName: 'Marcin',
+        lastName: 'Dodi',
+        points: 2100,
+        userId: users[0].id,
+      },
 
-        {
-          firstName: 'Apolonia',
-          lastName: 'Octopus',
-          points: 3700,
-          userId: users[1].id,
-        },
+      {
+        firstName: 'Apolonia',
+        lastName: 'Octopus',
+        points: 3700,
+        userId: users[1].id,
+      },
 
-        {
-          firstName: 'Oliwier',
-          lastName: 'Jasny',
-          points: 0,
-          userId: users[2].id,
-        },
+      {
+        firstName: 'Oliwier',
+        lastName: 'Jasny',
+        points: 0,
+        userId: users[2].id,
+      },
 
-        {
-          firstName: 'Asia',
-          lastName: 'Gotuje',
-          points: 100,
-          userId: users[3].id,
-        },
+      {
+        firstName: 'Asia',
+        lastName: 'Gotuje',
+        points: 100,
+        userId: users[3].id,
+      },
 
-        {
-          firstName: 'Piotr',
-          lastName: 'Ogiński',
-          points: 500,
-          userId: users[4].id,
-        },
-      ])
+      {
+        firstName: 'Piotr',
+        lastName: 'Ogiński',
+        points: 500,
+        userId: users[4].id,
+      },
+    ])
 
-    const restaurants = await Restaurant.createMany([{
+    const restaurants = await Restaurant.createMany([
+      {
         name: 'Restauracja Solvro',
         city: 'Wroclaw',
         street: 'plac Grunwaldzki',
         streetNumber: 42,
         userId: users[5].id,
-      },  
+      },
     ])
 
-    const producers = await FoodProducer.createMany([{
+    const producers = await FoodProducer.createMany([
+      {
         name: 'Ropucha Shop',
-        userId: users[6].id,  
-      }
+        userId: users[6].id,
+      },
     ])
 
     const products = await Product.createMany([
@@ -129,7 +132,7 @@ export default class extends BaseSeeder {
         producerId: producers[0].id,
         isActive: true,
         imageUrl: 'https://sokolow.pl/sites/default/files/images_product/piers_drobiowa_1.png',
-      }
+      },
     ])
 
     const categories = await Category.createMany([
@@ -182,9 +185,6 @@ export default class extends BaseSeeder {
         name: 'Bez cukru',
         type: CategoryType.TYPE_OF_DIET,
       },
-
-      
-
     ])
     //copilot poad połowe  ugotował
     const recipes = await Recipe.createMany([
@@ -198,18 +198,19 @@ export default class extends BaseSeeder {
         userId: users[3].id,
         isActive: true,
       },
-      
+
       {
         name: 'Brownie',
         description: 'Pyszny deser czekoladowy',
         preparationTime: 60,
         difficultyLevel: 1,
         isProfessional: false,
-        imageUrl: 'https://mojewypieki.com/wp-content/uploads/2022/10/Brownie_najlepszy_przepis_1.jpg',
+        imageUrl:
+          'https://mojewypieki.com/wp-content/uploads/2022/10/Brownie_najlepszy_przepis_1.jpg',
         userId: users[4].id,
         isActive: true,
       },
-        
+
       {
         name: 'Jajecznica z pomidorami',
         description: 'Szybkie śniadanie',
@@ -263,16 +264,23 @@ export default class extends BaseSeeder {
         imageUrl: null,
         userId: users[5].id,
         isActive: true,
-      }
-
+      },
     ])
 
-    await recipes[0].related('groups').attach([categories[0].id, categories[4].id, categories[5].id]) // Makaron z pesto 
-    await recipes[1].related('groups').attach([categories[3].id, categories[4].id, categories[5].id]) // Brownie 
-    await recipes[2].related('groups').attach([categories[2].id, categories[4].id, categories[9].id, categories[5].id]) // Jajecznica 
-    await recipes[3].related('groups').attach([categories[1].id, categories[9].id]) // Kotlet schabowy 
-    await recipes[4].related('groups').attach([categories[1].id, categories[4].id]) // Kurczak curry 
-    await recipes[5].related('groups').attach([categories[3].id, categories[4].id, categories[5].id]) // Tarta z malinami
+    await recipes[0]
+      .related('groups')
+      .attach([categories[0].id, categories[4].id, categories[5].id]) // Makaron z pesto
+    await recipes[1]
+      .related('groups')
+      .attach([categories[3].id, categories[4].id, categories[5].id]) // Brownie
+    await recipes[2]
+      .related('groups')
+      .attach([categories[2].id, categories[4].id, categories[9].id, categories[5].id]) // Jajecznica
+    await recipes[3].related('groups').attach([categories[1].id, categories[9].id]) // Kotlet schabowy
+    await recipes[4].related('groups').attach([categories[1].id, categories[4].id]) // Kurczak curry
+    await recipes[5]
+      .related('groups')
+      .attach([categories[3].id, categories[4].id, categories[5].id]) // Tarta z malinami
     await recipes[6].related('groups').attach([categories[1].id, categories[4].id]) // Łosoś z sosem bois boudran
 
     await Ingredient.createMany([
@@ -319,7 +327,7 @@ export default class extends BaseSeeder {
         calorificValue: 150,
         recipeId: recipes[2].id,
       },
-      
+
       {
         name: 'Pomidor',
         calorificValue: 50,
@@ -374,10 +382,9 @@ export default class extends BaseSeeder {
         calorificValue: 200,
         recipeId: recipes[6].id,
       },
-
     ])
-    
-    await Review.createMany ([
+
+    await Review.createMany([
       {
         grade: 5,
         review: 'Bardzo dobre',
@@ -397,7 +404,7 @@ export default class extends BaseSeeder {
         review: 'Nie polecam - robię lepszą z własnego przepisu',
         amatorId: amators[0].id,
         recipeId: recipes[2].id,
-      },  
+      },
     ])
 
     await Favourite.createMany([
@@ -409,7 +416,7 @@ export default class extends BaseSeeder {
       {
         amatorId: amators[3].id,
         recipeId: recipes[2].id,
-      }
+      },
     ])
 
     await Cook.createMany([
@@ -418,15 +425,14 @@ export default class extends BaseSeeder {
         lastName: 'Moran',
         userId: users[7].id,
         restaurantId: restaurants[0].id,
-      }
-
+      },
     ])
-    
+
     const packages = await FoodPackage.createMany([
       {
         name: 'Makaron z pesto paczka',
         producerId: producers[0].id,
-      }
+      },
     ])
 
     packages[0].related('groups').attach([products[0].id, products[1].id])
@@ -467,6 +473,16 @@ export default class extends BaseSeeder {
         categoryId: categories[9].id,
       },
     ])
+    await Notification.createMany([
+      {
+        content: 'Nowe danie w restauracji Solvro',
+        userId: users[5].id,
+      },
 
+      {
+        content: 'Nowy produkt',
+        userId: users[6].id,
+      },
+    ])
   }
-} 
+}

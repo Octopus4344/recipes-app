@@ -1,7 +1,7 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class Messages extends BaseSchema {
-  protected tableName = 'messages'
+  protected tableName = 'notifications'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
