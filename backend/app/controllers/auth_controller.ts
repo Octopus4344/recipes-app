@@ -1,3 +1,6 @@
+import Amator from '#models/amator'
+import FoodProducer from '#models/food_producer'
+import Restaurant from '#models/restaurant'
 import User from '#models/user'
 import { registerValidator } from '#validators/register'
 import { HttpContext } from '@adonisjs/core/http'
@@ -18,16 +21,50 @@ export default class AuthController {
       return response.abort('Invalid credentials')
     }
     await auth.use('jwt').generate(user)
-    return response.ok(user)
+    let userResponse = user.serialize()
+    const isAmator = (await Amator.findBy('userId', user.id)) !== null
+    if (isAmator) {
+      const amatorData = await Amator.findBy('userId', user.id)
+      return response.ok({ ...userResponse, amatorData: amatorData?.serialize(), role: 'amator' })
+    }
+    const isRestaurant = (await Restaurant.findBy('userId', user.id)) !== null
+    if (isRestaurant) {
+      const restaurantData = await Restaurant.findBy('userId', user.id)
+      return response.ok({
+        ...userResponse,
+        restaurantData: restaurantData?.serialize(),
+        role: 'restaurant',
+      })
+    }
+    const isFoodProducer = (await FoodProducer.findBy('userId', user.id)) !== null
+    if (isFoodProducer) {
+      const foodProducerData = await FoodProducer.findBy('userId', user.id)
+      return response.ok({
+        ...userResponse,
+        foodProducerData: foodProducerData?.serialize(),
+        role: 'food_producer',
+      })
+    }
+    return response.ok(userResponse)
   }
 
   async register({ request, response }: HttpContext) {
     const payload = await request.validateUsing(registerValidator)
     const hashedPassword = await hash.make(payload.password)
-    const userToCreate = { ...payload, password: hashedPassword }
+    const userToCreate = {
+      username: payload.username,
+      email: payload.email,
+      password: hashedPassword,
+    }
     const user = await User.create(userToCreate)
+    const amator = await Amator.create({
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      points: 0,
+      userId: user.id,
+    })
 
-    return response.created(user)
+    return response.created({ user, amator })
   }
 
   async destroy({ response }: HttpContext) {
