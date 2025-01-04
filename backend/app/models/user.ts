@@ -14,6 +14,9 @@ export default class User extends BaseModel {
   declare username: string
 
   @column()
+  declare email: string
+
+  @column()
   declare password: string
 
   @column.dateTime({ autoCreate: true })
@@ -33,4 +36,11 @@ export default class User extends BaseModel {
 
   @hasOne(() => FoodProducer)
   declare foodProducer: HasOne<typeof FoodProducer>
+
+  public getId() {
+    return this.id
+  }
+  public getOriginal() {
+    return this
+  }
 }

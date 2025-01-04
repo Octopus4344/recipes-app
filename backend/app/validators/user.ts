@@ -2,9 +2,8 @@ import vine from '@vinejs/vine'
 
 const userValidatorSchema = vine.object({
   username: vine.string(),
+  email: vine.string().email(),
   password: vine.string(),
-  //no longer in model?
- // allowNotifications: vine.boolean(),
 })
 
 export const updateUserValidator = vine.compile(userValidatorSchema)

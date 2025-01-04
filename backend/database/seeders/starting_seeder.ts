@@ -19,41 +19,49 @@ export default class extends BaseSeeder {
     const users = await User.createMany([
       {
         username: 'Dodi',
+        email: 'elo@zelo123.com',
         password: 'Jasnysmokens!',
       },
 
       {
         username: 'OctopusMarcopus',
+        email: 'octo@gmail.com',
         password: 'Aramek123',
       },
 
       {
         username: 'JasnySmokens',
+        email: 'smokens@kozak.com',
         password: 'D00di!',
       },
 
       {
         username: 'AsiaGotuje',
+        email: 'asia@kasia,com',
         password: 'password',
       },
 
       {
         username: 'Paei3000',
+        email: 'adi@email.com',
         password: 'KochamGotowac',
       },
 
       {
         username: 'Solvro',
+        email: 'solvro@kozaki.com',
         password: 'solvroznowugotuje',
       },
 
       {
         username: 'RopuchaOfficial',
+        email: 'ropucha@maduzegobrzucha.pl',
         password: 'jakaparuwawariacie',
       },
 
       {
         username: 'KucharzMichelle',
+        email: 'micheal@morron.pl',
         password: 'michelle123',
       },
     ])
