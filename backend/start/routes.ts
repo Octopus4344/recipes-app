@@ -14,7 +14,7 @@ const AuthController = () => import('#controllers/auth_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 
-router.get('/recipes', [RecipesController, 'index']).use(middleware.ourAuth())
+router.get('/recipes', [RecipesController, 'index'])
 router.post('/recipes', [RecipesController, 'store'])
 router.get('/recipes/:id', [RecipesController, 'show'])
 router.put('/recipes/:id', [RecipesController, 'update'])
