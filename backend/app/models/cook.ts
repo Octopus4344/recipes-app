@@ -14,10 +14,10 @@ export default class Cook extends BaseModel {
   @column()
   declare lastName: string
 
-  @column({ columnName: 'fk_user_id' }) 
+  @column({ columnName: 'fk_user_id' })
   declare userId: number
 
-  @column({ columnName: 'fk_restaurant_id' }) 
+  @column({ columnName: 'fk_restaurant_id' })
   declare restaurantId: number | null
 
   @column.dateTime({ autoCreate: true })

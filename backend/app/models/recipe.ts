@@ -28,7 +28,7 @@ export default class Recipe extends BaseModel {
   @column()
   declare imageUrl: string | null
 
-  @column({ columnName: 'fk_user_id' }) 
+  @column({ columnName: 'fk_user_id' })
   declare userId: number | null
 
   @column()
@@ -51,7 +51,7 @@ export default class Recipe extends BaseModel {
 
   @manyToMany(() => Category, {
     localKey: 'id',
-    pivotForeignKey: 'fk_recipe_id', //oj oj oj chat nie dogotował tym razem
+    pivotForeignKey: 'fk_recipe_id',
     relatedKey: 'id',
     pivotRelatedForeignKey: 'fk_category_id',
     pivotTable: 'tags',

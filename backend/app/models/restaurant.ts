@@ -22,7 +22,7 @@ export default class Restaurant extends BaseModel {
   @column()
   declare streetNumber: number
 
-  @column({ columnName: 'fk_user_id' }) 
+  @column({ columnName: 'fk_user_id' })
   declare userId: number
 
   @column()
