@@ -7,10 +7,10 @@ export default class Favourite extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
-  @column()
+  @column({ columnName: 'fk_amator_id' }) 
   declare amatorId: number
 
-  @column()
+  @column({ columnName: 'fk_amator_id' }) 
   declare recipeId: number
 
   @belongsTo(() => User, {

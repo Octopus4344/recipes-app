@@ -1,9 +1,10 @@
 import vine from '@vinejs/vine'
 
-export const updateProductValidator = vine.compile(
-  vine.object({
-    name: vine.string(),
-    image_url: vine.string(),
-    fk_producer_id: vine.number().positive(),
-  })
-)
+const productSchema = vine.object({
+  name: vine.string(),
+  imageUrl: vine.string(),
+  producerId: vine.number(),
+  isActive: vine.boolean(),
+})
+
+export const updateProductValidator = vine.compile(productSchema)

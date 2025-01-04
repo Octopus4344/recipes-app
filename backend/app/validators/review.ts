@@ -1,10 +1,10 @@
 import vine from '@vinejs/vine'
 
-export const updateReviewValidator = vine.compile(
-  vine.object({
-    grade: vine.number().decimal([1, 5]),
-    review: vine.string(),
-    fk_amator_id: vine.number().positive(),
-    fk_recipe_id: vine.number().positive(),
-  })
-)
+const reviewValidatorSchema = vine.object({
+  grade: vine.number().in([1, 2, 3, 4, 5]),
+  review: vine.string().optional(),
+  amatorId: vine.number(),
+  recipeId: vine.number(),
+})
+
+export const updateReviewValidator = vine.compile(reviewValidatorSchema)

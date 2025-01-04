@@ -2,23 +2,16 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import User from '#models/user'
-import Restaurant from '#models/restaurant'
 
-export default class Cook extends BaseModel {
+export default class Message extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
   @column()
-  declare firstName: string
+  declare content: string
 
   @column()
-  declare lastName: string
-
-  @column({ columnName: 'fk_user_id' }) 
   declare userId: number
-
-  @column({ columnName: 'fk_restaurant_id' }) 
-  declare restaurantId: number | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -28,7 +21,4 @@ export default class Cook extends BaseModel {
 
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
-
-  @belongsTo(() => Restaurant)
-  declare restaurant: BelongsTo<typeof Restaurant>
 }

@@ -1,17 +1,24 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import User from '#models/user'
+import Amator from '#models/amator'
+import Recipe from '#models/recipe'
 
-export default class Message extends BaseModel {
+export default class Review extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
   @column()
-  declare content: string
+  declare grade: number
 
   @column()
-  declare userId: number
+  declare review: string
+
+  @column({ columnName: 'fk_amator_id' }) 
+  declare amatorId: number
+
+  @column({ columnName: 'fk_recipe_id' }) 
+  declare recipeId: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -19,6 +26,9 @@ export default class Message extends BaseModel {
   @column.dateTime({ autoUpdate: true })
   declare updatedAt: DateTime
 
-  @belongsTo(() => User)
-  declare user: BelongsTo<typeof User>
+  @belongsTo(() => Amator)
+  declare user: BelongsTo<typeof Amator>
+
+  @belongsTo(() => Recipe)
+  declare recipe: BelongsTo<typeof Recipe>
 }

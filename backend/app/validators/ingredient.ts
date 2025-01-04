@@ -1,10 +1,11 @@
 import vine from '@vinejs/vine'
 
-export const updateIngredientValidator = vine.compile(
-  vine.object({
-    name: vine.string(),
-    calorific_value: vine.number().positive(),
-    fk_recipe_id: vine.number().positive(),
-    fk_product_id: vine.number().positive(),
-  })
-)
+
+const ingredientValidatorSchema =   vine.object({
+  name: vine.string(),
+  calorificValue: vine.number(),
+  recipeId: vine.number(),
+  productId: vine.number().optional(),
+})
+
+export const updateIngredientValidator = vine.compile(ingredientValidatorSchema)

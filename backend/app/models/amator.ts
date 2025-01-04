@@ -19,7 +19,7 @@ export default class Amator extends BaseModel {
   @column()
   declare points: number
 
-  @column()
+  @column({ columnName: 'fk_user_id' }) 
   declare userId: number
 
   @column.dateTime({ autoCreate: true })

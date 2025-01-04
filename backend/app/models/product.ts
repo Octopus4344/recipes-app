@@ -15,7 +15,7 @@ export default class Product extends BaseModel {
   @column()
   declare imageUrl: string
 
-  @column()
+  @column({ columnName: 'fk_producer_id' }) 
   declare producerId: number
 
   @column()
