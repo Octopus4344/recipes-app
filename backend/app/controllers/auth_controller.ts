@@ -12,8 +12,7 @@ export default class AuthController {
     if (!user) {
       return response.abort('Invalid credentials')
     }
-    //const isPasswordValid = await hash.verify(user.password, password)
-    const isPasswordValid = user.password === password
+    const isPasswordValid = await hash.verify(user.password, password)
 
     if (!isPasswordValid) {
       return response.abort('Invalid credentials')
@@ -24,8 +23,9 @@ export default class AuthController {
 
   async register({ request, response }: HttpContext) {
     const payload = await request.validateUsing(registerValidator)
-
-    const user = await User.create(payload)
+    const hashedPassword = await hash.make(payload.password)
+    const userToCreate = { ...payload, password: hashedPassword }
+    const user = await User.create(userToCreate)
 
     return response.created(user)
   }
