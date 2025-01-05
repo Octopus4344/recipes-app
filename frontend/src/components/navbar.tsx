@@ -3,10 +3,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "@/context/user-context";
 import { usePathname } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export function Navbar() {
-  const { user } = useUser();
+  const { user, logout } = useUser();
   const currentPath = usePathname();
+  const router = useRouter();
 
   const isActive = (path: string) => currentPath === path ? 'text-primary' : 'hover:text-gray-600';
 
@@ -14,6 +24,11 @@ export function Navbar() {
     return (
       <div />
     );
+  }
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login")
   }
 
   return (
@@ -39,7 +54,16 @@ export function Navbar() {
                     <Link className={isActive("/my-products")} href="/my-products">My products</Link>
                   ) : <Link className={isActive("/chat")} href="/chat">Chat with the chef</Link>
             }
-            <Image src={"/profile-pic.svg"} alt={"Profile picture"} width={50} height={50} />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Image src="/profile-pic.svg" alt="Profile picture" className="cursor-pointer" width={50} height={50} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Menu</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                  <Button variant="ghost" onClick={handleLogout}>Log out</Button>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </nav>
