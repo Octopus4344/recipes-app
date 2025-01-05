@@ -20,7 +20,6 @@ export async function fetchData(
 
   if (!response.ok) {
 
-    if (response.status === 400) {
       let errorData: any;
 
       if (contentType.includes("application/json")) {
@@ -31,9 +30,13 @@ export async function fetchData(
         errorData = { message: textError };
         console.log(errorData);
       }
-      throw { validationError: errorData };
+    if ((response.status === 400 || response.status === 422) && errorData.errors) {
+      throw {
+        validationError: errorData.errors,
+      }
     }
-    throw new Error(response.statusText);
+
+    throw new Error(errorData.message || response.statusText);
 
   }
 

@@ -39,12 +39,8 @@ export function AuthForm({ endpoint, current, alt, path }: AuthProps): JSX.Eleme
       setUser(data);
     },
     onError: (error: any) => {
-      if (error.validationError){
-        alert(error.validationError.message || "Validation Error");
-      }
-      else {
         alert(error.message || "Something went wrong");
-      }
+
     }
   });
 

@@ -1,6 +1,7 @@
 import { AuthForm } from "@/components/auth-form";
+import { RegistrationForm } from "@/components/ui/sign-up";
 
 
 export default function RegisterPage() {
-  return <AuthForm endpoint={"register"} alt={"Sign in"} current={"Sign up"} path={"login"} />;
+  return <RegistrationForm endpoint={"user/register"} alt={"Sign in"} current={"Sign up"} path={"login"} />;
 }
