@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useUser } from "@/context/user-context";
 import { fetchData } from "@/lib/api";
 import { User } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 interface LoginInput {
   email: string;
@@ -32,8 +33,9 @@ export function RegistrationForm({ endpoint, current, alt, path }: AuthProps): J
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<Array<{ message: string, rule: string, field: string}>>([]);
+  const [errors, setErrors] = useState<Array<{ message: string, rule: string, field: string }>>([]);
   const { setUser } = useUser();
+  const router = useRouter();
 
 
   const mutation = useMutation<User, Error, LoginInput>({
@@ -50,16 +52,17 @@ export function RegistrationForm({ endpoint, current, alt, path }: AuthProps): J
     },
     onSuccess: (data: User) => {
       setUser(data);
-      setErrors([])
+      alert("An account was created successfully, You may now log in");
+      router.push("/login");
     },
-    onError:  (error: any) => {
+    onError: (error: any) => {
       if (error.validationError) {
-        setErrors(error.validationError)
-        console.log("Validation error")
-        console.log(error.validationError)
+        setErrors(error.validationError);
+        console.log("Validation error");
+        console.log(error.validationError);
       } else {
         alert(error.message || "Something went wrong");
-        console.log("Error")
+        console.log("Error");
       }
     }
   });
@@ -72,7 +75,7 @@ export function RegistrationForm({ endpoint, current, alt, path }: AuthProps): J
   const getErrorMessage = (field: string) => {
     const error = errors.find((err) => err.field === field);
     return error ? error.message : null;
-  }
+  };
 
   return (
     <div>
@@ -94,7 +97,8 @@ export function RegistrationForm({ endpoint, current, alt, path }: AuthProps): J
                     required={true}
                     onChange={(e) => setFirstName(e.target.value)}
                   />
-                  {getErrorMessage("firstName") && <p className="text-red-600 text-sm">{getErrorMessage("firstName")}</p>}
+                  {getErrorMessage("firstName") &&
+                    <p className="text-red-600 text-sm">{getErrorMessage("firstName")}</p>}
                 </div>
                 <div className="flex flex-col space-y-1.5 m-4 w-full">
                   <Label htmlFor="lastName">Last Name</Label>

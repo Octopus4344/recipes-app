@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useUser } from "@/context/user-context";
 import { fetchData } from "@/lib/api";
 import { User } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 interface LoginInput {
   email: string;
@@ -27,6 +28,7 @@ export function AuthForm({ endpoint, current, alt, path }: AuthProps): JSX.Eleme
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setUser } = useUser();
+  const router = useRouter();
 
 
   const mutation = useMutation<User, Error, LoginInput>({
@@ -37,10 +39,10 @@ export function AuthForm({ endpoint, current, alt, path }: AuthProps): JSX.Eleme
     },
     onSuccess: (data: User) => {
       setUser(data);
+      router.push("/");
     },
     onError: (error: any) => {
-        alert(error.message || "Something went wrong");
-
+      alert(error.message || "Something went wrong");
     }
   });
 

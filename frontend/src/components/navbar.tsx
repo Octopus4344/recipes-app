@@ -10,13 +10,7 @@ export function Navbar() {
 
   const isActive = (path: string) => currentPath === path ? 'text-primary' : 'hover:text-gray-600';
 
-  // if (!user || currentPath === 'login' || currentPath === 'register') {
-  //   return (
-  //     <div/>
-  // )
-  // }
-
-  if (currentPath === "/login" || currentPath === "/register") {
+  if (!user || currentPath === "/login" || currentPath === "/register") {
     return (
       <div />
     );
@@ -32,7 +26,7 @@ export function Navbar() {
           <div className="flex flex-wrap items-center space-x-10 xl:space-x-24 left-3">
             <Link className={isActive("/")} href="/">Home</Link>
             <Link className={isActive("/favourites")} href="/favourites">Favourites</Link>
-            {user?.role === "amateur" ? (
+            {user?.role === "amator" ? (
                 <Link className={isActive("/chat")} href="/chat">Chat with the chef</Link>
               )
               : user?.role === "restaurant" ? (
