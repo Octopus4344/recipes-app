@@ -8,12 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useUser } from "@/context/user-context";
-import { editData } from "@/lib/api";
-
-interface AuthResponse {
-  token: string;
-  role: "amateur" | "restaurant" | "cook" | "foodProducer";
-}
+import { fetchData } from "@/lib/api";
+import { User } from "@/lib/types";
 
 interface LoginInput {
   email: string;
@@ -30,17 +26,17 @@ interface AuthProps {
 export function AuthForm({ endpoint, current, alt, path }: AuthProps): JSX.Element {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useUser();
+  const { setUser } = useUser();
 
 
-  const mutation = useMutation<AuthResponse, Error, LoginInput>({
+  const mutation = useMutation<User, Error, LoginInput>({
     mutationFn: async (credentials: { email: string, password: string }) => {
-      return await editData(endpoint, "POST",
+      return await fetchData(endpoint, "POST",
         { body: JSON.stringify(credentials) }
       );
     },
-    onSuccess: (data: AuthResponse) => {
-      login(data.token, { role: data.role });
+    onSuccess: (data: User) => {
+      setUser(data);
     },
     onError: (error: any) => {
       if (error.validationError){

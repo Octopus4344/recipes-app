@@ -1,16 +1,12 @@
 "use client";
 import { createContext, useContext, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { User } from "@/lib/types";
 
-interface User {
-  role: "amateur" | "restaurant" | "cook" | "foodProducer";
-}
 
 interface UserContextInterface {
   user: User | null;
-  loading: boolean;
-  login: (token: string, user: User) => void;
-  logout: () => void;
+  setUser: (user: User) => void;
+  clearUser: () => void;
 }
 
 const UserContext = createContext<UserContextInterface | undefined>(undefined);
@@ -25,22 +21,13 @@ export function useUser() {
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const queryClient = useQueryClient();
 
-  const login = (token: string, user: User) => {
-    localStorage.setItem("token", token);
-    setUser(user);
-  };
-
-  const logout = () => {
-    localStorage.removeItem("token");
+  const clearUser = () => {
     setUser(null);
-    queryClient.clear();
   };
 
   return (
-    <UserContext.Provider value={{ user, loading, login, logout }}>
+    <UserContext.Provider value={{ user,  setUser, clearUser }}>
       {children}
     </UserContext.Provider>
   );
