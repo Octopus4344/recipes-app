@@ -7,6 +7,7 @@ import { fetchData } from "@/lib/api";
 
 interface UserContextInterface {
   user: User | null;
+  isLoading: boolean;
   setUser: (user: User) => void;
   clearUser: () => void;
   logout: () => void;
@@ -24,6 +25,7 @@ export function useUser() {
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -31,6 +33,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     if (storedUser){
       setUser(JSON.parse(storedUser));
     }
+    setIsLoading(false);
   },[])
 
   useEffect(() => {
@@ -60,7 +63,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <UserContext.Provider value={{ user,  setUser, clearUser, logout }}>
+    <UserContext.Provider value={{ user,  setUser, clearUser, logout, isLoading }}>
       {children}
     </UserContext.Provider>
   );
