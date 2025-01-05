@@ -16,7 +16,7 @@ interface AuthResponse {
 }
 
 interface LoginInput {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -28,29 +28,33 @@ interface AuthProps {
 }
 
 export function AuthForm({ endpoint, current, alt, path }: AuthProps): JSX.Element {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useUser();
 
 
   const mutation = useMutation<AuthResponse, Error, LoginInput>({
-    mutationFn: async (credentials: { username: string, password: string }) => {
-      return await editData(endpoint, {
-        method: "POST",
-        body: JSON.stringify(credentials)
-      });
+    mutationFn: async (credentials: { email: string, password: string }) => {
+      return await editData(endpoint, "POST",
+        { body: JSON.stringify(credentials) }
+      );
     },
     onSuccess: (data: AuthResponse) => {
       login(data.token, { role: data.role });
     },
-    onError: (error: Error) => {
-      alert(error.message);
+    onError: (error: any) => {
+      if (error.validationError){
+        alert(error.validationError.message || "Validation Error");
+      }
+      else {
+        alert(error.message || "Something went wrong");
+      }
     }
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    mutation.mutate({ username: username, password: password });
+    mutation.mutate({ email: email, password: password });
   };
 
   return (
@@ -67,10 +71,10 @@ export function AuthForm({ endpoint, current, alt, path }: AuthProps): JSX.Eleme
                 <Input
                   id={"login"}
                   name={"login"}
-                  value={username}
+                  value={email}
                   type="text"
                   required={true}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="flex flex-col space-y-1.5 m-4">

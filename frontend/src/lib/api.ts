@@ -5,15 +5,15 @@ export async function fetchData<T>(
   apiURL?: { method: string; body: string },
   options?: RequestInit
 ): Promise<T> {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const url = apiURL || NEXT_PUBLIC_API_URL;
   const response = await fetch(`${url}/${endpoint}`, {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: token ? `Bearer ${token}`: '',
-      ...(options?.headers ?? {}),
-    },
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+      ...(options?.headers ?? {})
+    }
   });
 
   if (!response.ok) {
@@ -24,34 +24,52 @@ export async function fetchData<T>(
 }
 
 
-
 export async function editData(
   endpoint: string,
-  apiURL?: { method: string; body: string },
   method: "POST" | "PUT" | "DELETE" = "POST",
-  options?: RequestInit
+  options?: RequestInit,
+  apiURL?: string
 ) {
   const url = apiURL || NEXT_PUBLIC_API_URL;
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
+  console.log(`${url}/${endpoint}`);
+  console.log(`K`);
   const response = await fetch(`${url}/${endpoint}`, {
     method: method,
     ...options,
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: token ? `Bearer ${token}`: '',
-      ...(options?.headers ?? {}),
-    },
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+      ...(options?.headers ?? {})
+    }
   });
+  const contentType = response.headers.get("Content-Type") || "";
 
   if (!response.ok) {
+
     if (response.status === 400) {
-      const errorData = await response.json();
+      let errorData: any;
+
+      if (contentType.includes("application/json")) {
+        errorData = await response.json();
+      }
+      else {
+        const textError = await response.text();
+        errorData = { message: textError };
+        console.log(errorData);
+      }
       throw { validationError: errorData };
     }
     throw new Error(response.statusText);
-  }
-  if (response.statusText === '204') return response.json()
-  return null;
 
+  }
+
+
+  if (contentType.includes("application/json")) {
+    return await response.json();
+  } else if (response.statusText === "204") return null;
+  else if (contentType.includes("text/")) {
+    return await response.text();
+  } else return response.blob();
 
 }
