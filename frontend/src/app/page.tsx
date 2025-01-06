@@ -1,7 +1,5 @@
 "use client"
-import { useRouter } from "next/navigation";
-import { useUser } from "@/context/user-context";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { ProtectedRoute } from "@/components/protected-route";
 
 export default function Home() {
 

@@ -26,7 +26,7 @@ export function ProtectedRoute(props: Props) {
         return;
       }
     }
-  }, []);
+  }, [user, isLoading]);
 
   //suspensea tez mozna zrobic ladniejszego
   if (isLoading) {

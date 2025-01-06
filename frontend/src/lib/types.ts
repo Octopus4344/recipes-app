@@ -12,7 +12,7 @@ interface Amateur {
   id: string;
   firstName: string;
   lastName: string;
-  points: number
+  points: number;
 }
 
 interface FoodProducer {
