@@ -1,10 +1,11 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
-import type { HasOne } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, hasMany, hasOne } from '@adonisjs/lucid/orm'
+import type { HasMany, HasOne } from '@adonisjs/lucid/types/relations'
 import Cook from '#models/cook'
 import Amator from '#models/amator'
 import Restaurant from '#models/restaurant'
 import FoodProducer from '#models/food_producer'
+import Notification from '#models/notification'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -36,6 +37,9 @@ export default class User extends BaseModel {
 
   @hasOne(() => FoodProducer)
   declare foodProducer: HasOne<typeof FoodProducer>
+
+  @hasMany(() => Notification)
+  declare notifications: HasMany<typeof Notification>
 
   public getId() {
     return this.id
