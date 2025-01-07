@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
-import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, belongsTo, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import User from '#models/user'
 import Review from '#models/review'
-import Favourite from '#models/favourite'
 import NutritionalProfile from '#models/nutritional_profile'
+import Recipe from '#models/recipe'
 
 export default class Amator extends BaseModel {
   @column({ isPrimary: true })
@@ -34,8 +34,15 @@ export default class Amator extends BaseModel {
   @hasMany(() => Review)
   declare reviews: HasMany<typeof Review>
 
-  @hasMany(() => Favourite)
-  declare favourites: HasMany<typeof Favourite>
+  @manyToMany(() => Recipe, {
+    localKey: 'id',
+    pivotForeignKey: 'fk_amator_id',
+    relatedKey: 'id',
+    pivotRelatedForeignKey: 'fk_recipe_id',
+    pivotTable: 'favourites',
+    pivotTimestamps: true,
+  })
+  declare favourites: ManyToMany<typeof Recipe>
 
   @hasMany(() => NutritionalProfile)
   declare nutritionalProfiles: HasMany<typeof NutritionalProfile>

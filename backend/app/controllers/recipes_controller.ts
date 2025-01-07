@@ -30,4 +30,13 @@ export default class RecipesController {
     await recipe.delete()
     return { message: 'Recipe deleted.' }
   }
+
+  async getUserRecipes({ auth }: HttpContext) {
+    const userId = auth.user?.id
+    if (userId === undefined) {
+      return { message: 'User not authenticated.' }
+    }
+    const recipes = await Recipe.query().where('userId', userId)
+    return recipes
+  }
 }

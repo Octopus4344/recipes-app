@@ -1,3 +1,36 @@
 // import type { HttpContext } from '@adonisjs/core/http'
 
-export default class UsersController {}
+import Amator from '#models/amator'
+import { HttpContext } from '@adonisjs/core/http'
+
+export default class UsersController {
+  async getUserFavourites({ auth }: HttpContext) {
+    const userId = auth.user?.id
+    if (userId === undefined) {
+      return { message: 'User not authenticated.' }
+    }
+    const amator = await Amator.findByOrFail('userId', userId)
+    const favourites = await amator.related('favourites').query()
+    return favourites
+  }
+
+  async addRecipeToFavourites({ request, response, auth }: HttpContext) {
+    const userId = auth.user?.id
+    if (userId === undefined) {
+      return response.abort('User not authenticated.')
+    }
+    const amator = await Amator.findByOrFail('userId', userId)
+    const payload = request.only(['recipeId'])
+    await amator.related('favourites').attach([payload.recipeId])
+  }
+
+  async removeRecipeFromFavourites({ request, response, auth }: HttpContext) {
+    const userId = auth.user?.id
+    if (userId === undefined) {
+      return response.abort('User not authenticated.')
+    }
+    const amator = await Amator.findByOrFail('userId', userId)
+    const payload = request.only(['recipeId'])
+    await amator.related('favourites').detach([payload.recipeId])
+  }
+}
