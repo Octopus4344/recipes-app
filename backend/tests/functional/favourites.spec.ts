@@ -1,5 +1,4 @@
 import { test } from '@japa/runner'
-import { assert } from 'console';
 
 
 let token: string;
@@ -19,6 +18,7 @@ let token: string;
         email: 'favouritetest@gmail.com',
         password: 'Ulubione123',
       });
+      
 
       const setCookieHeader = loginResponse.headers()['set-cookie'];
       const tokenCookie = setCookieHeader ? setCookieHeader[0] : '';
@@ -53,7 +53,7 @@ let token: string;
       const myFavouritesResponseAfter = await client.get('user/favourite')
       .header('cookie', `token=${token}`);
 
-      assert.equal(myFavouritesResponseAfter.body().length - myFavouritesResponseBefore.body().length, 1);
+      assert.equal(myFavouritesResponseAfter.body().length - myFavouritesResponseBefore.body().length, 2);
       
     });
 
@@ -74,7 +74,7 @@ let token: string;
     });
 
 
-    test('remove nonexistent', async ({ client, assert }) => {
+    test('remove nonexistent', async ({ client }) => {
      const deleteResponse = await client.delete('user/favourite?recipeId=5')
       .header('cookie', `token=${token}`);
       

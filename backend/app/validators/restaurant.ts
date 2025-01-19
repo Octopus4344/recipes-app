@@ -1,6 +1,6 @@
 import vine from '@vinejs/vine'
 
-const notificationValidatorSchema = vine.object({
+const restaurantValidatorSchema = vine.object({
   name: vine.string(),
   website: vine.string().nullable(),
   city: vine.string(),
@@ -10,4 +10,4 @@ const notificationValidatorSchema = vine.object({
   description: vine.string().nullable(),
 })
 
-export const updateNotificationValidator = vine.compile(notificationValidatorSchema)
+export const updateRestaurantValidator = vine.compile(restaurantValidatorSchema)
