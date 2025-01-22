@@ -22,7 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 export function ReviewDialog({ id }: { id: number }) {
   const queryClient = useQueryClient();
   const { user } = useUser();
-  const [review, setReview] = useState<Review>({grade: 0, recipeId: id.toString()});
+  const [review, setReview] = useState<Review>({grade: 0, recipeId: ""});
   const [hasError, setHasError] = useState(false);
   const [step, setStep] = useState(0);
 
@@ -48,19 +48,24 @@ export function ReviewDialog({ id }: { id: number }) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recipe"] });
+      setStep(0);
+      setReview((prev) => ({...prev, grade: 0}));
     },
     onError: (error) => {
       alert(error.message || "Something went wrong");
     }
   });
 
-  const handleSubmit = async () => {
-    if (step === 1 && (!review.review || review.review === "") ) {
+  const handleSubmit = async (e: React.FormEvent) => {
+    if (step === 1 && (!review.review || review.review === "") || review.grade === 0 ) {
       setHasError(true);
+      setStep(0);
+      setReview((prev) => ({...prev, grade: 0}));
+      e.preventDefault();
       return
     }
-    if(user?.id) {
-      setReview((prev) => ({...prev, amatorId: user.id.toString()}));
+    if(user?.id && id) {
+      setReview((prev) => ({...prev, recipeId: id.toString(), amatorId: user.id.toString()}));
     }
     mutation.mutate()
 

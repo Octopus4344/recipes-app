@@ -29,7 +29,7 @@ export function RecipeOfTheDay({ recipe }: { recipe: Recipe }) {
           </div>
         </div>
         <div className="flex items-center justify-between w-full">
-          <Link href={"/"} className="text-gray-400 font-semibold">see more {">"}</Link>
+          <Link href={`/recipes/${recipe.id}`} className="text-gray-400 font-semibold">see more {">"}</Link>
           {user?.role === "amator" && <FavouriteToggle recipe={recipe} />}
         </div>
       </div>
