@@ -61,3 +61,4 @@ router.delete('user/logout', [AuthController, 'destroy']).use(middleware.ourAuth
 //Review
 router.get('/reviews', [ReviewsController, 'index'])
 router.post('/reviews', [ReviewsController, 'store'])
+router.get('/recipe_reviews/:id', [ReviewsController, 'recipeReviews'])

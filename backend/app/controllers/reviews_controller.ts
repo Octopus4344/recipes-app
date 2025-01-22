@@ -23,4 +23,7 @@ export default class ReviewsController {
 
     return { message: 'Review created.', review }
   }
+  async recipeReviews({ params }: HttpContext) {
+    return Review.query().where('recipeId', params.id).preload('user')
+  }
 }
