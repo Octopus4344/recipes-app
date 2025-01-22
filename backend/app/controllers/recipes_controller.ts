@@ -154,6 +154,7 @@ export default class RecipesController {
         }
       })
     )
-    return recipesWithFavouriteFlag
+
+    return recipesWithFavouriteFlag.sort((a, b) => b.averageRating - a.averageRating)
   }
 }
