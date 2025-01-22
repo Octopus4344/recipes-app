@@ -21,7 +21,13 @@ export default class UsersController {
     }
     const amator = await Amator.findByOrFail('userId', userId)
     const payload = request.only(['recipeId'])
+    if (
+      await amator.related('favourites').query().where('fk_recipe_id', payload.recipeId).first()
+    ) {
+      return response.abort('Recipe already in favourites.')
+    }
     await amator.related('favourites').attach([payload.recipeId])
+    return { message: 'Recipe added to favourites.' }
   }
 
   async removeRecipeFromFavourites({ request, response, auth }: HttpContext) {
