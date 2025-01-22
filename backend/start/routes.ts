@@ -62,3 +62,5 @@ router.delete('user/logout', [AuthController, 'destroy']).use(middleware.ourAuth
 router.get('/reviews', [ReviewsController, 'index'])
 router.post('/reviews', [ReviewsController, 'store'])
 router.get('/recipe_reviews/:id', [ReviewsController, 'recipeReviews'])
+router.post('/recipes_tags/:id', [RecipesController, 'addTagsToRecipe'])
+router.delete('/recipes_tags/:id', [RecipesController, 'destroyTagsFromRecipe'])

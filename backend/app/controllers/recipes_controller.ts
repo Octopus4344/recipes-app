@@ -18,6 +18,39 @@ export default class RecipesController {
     return Recipe.findOrFail(params.id)
   }
 
+  async addTagsToRecipe({ request, params }: HttpContext) {
+    const recipe = await Recipe.findOrFail(params.id)
+    const payload = request.only(['categories'])
+    if (payload.categories.length === 0) {
+      return { message: 'No tags to add.' }
+    }
+    if (payload.categories.length > 1) {
+      const categoriesToAttach = payload.categories.map((category: string) =>
+        Number.parseInt(category)
+      )
+      await recipe.related('tags').attach([...categoriesToAttach])
+    } else {
+      await recipe.related('tags').attach([payload.categories])
+    }
+    return { message: 'Tags added to recipe.' }
+  }
+  async destroyTagsFromRecipe({ request, params }: HttpContext) {
+    const recipe = await Recipe.findOrFail(params.id)
+    const payload = request.only(['categories'])
+    if (payload.categories.length === 0) {
+      return { message: 'No tags to remove.' }
+    }
+    if (payload.categories.length > 1) {
+      const categoriesToDetach = payload.categories.map((category: string) =>
+        Number.parseInt(category)
+      )
+      await recipe.related('tags').detach([...categoriesToDetach])
+    } else {
+      await recipe.related('tags').detach([payload.categories])
+    }
+    return { message: 'Tags removed from recipe.' }
+  }
+
   async update({ request, params }: HttpContext) {
     const recipe = await Recipe.findOrFail(params.id)
     const payload = await request.validateUsing(updateRecipeValidator)
