@@ -2,7 +2,6 @@ import Recipe from '#models/recipe'
 import { updateRecipeValidator } from '#validators/recipe'
 import type { HttpContext } from '@adonisjs/core/http'
 import Amator from '#models/amator'
-import User from '#models/user'
 import Notification from '#models/notification'
 
 export default class RecipesController {
@@ -136,6 +135,25 @@ export default class RecipesController {
         [profileCategoryIds.length]
       )
 
-    return recipes
+    const favouriteRecipesIds = await amator
+      .related('favourites')
+      .query()
+      .select('id')
+      .then((results) => results.map((fav) => fav.id))
+
+    const recipesWithFavouriteFlag = await Promise.all(
+      recipes.map(async (recipe) => {
+        const reviews = await recipe.related('reviews').query()
+        const avg = reviews.length
+          ? reviews.reduce((sum, review) => sum + review.grade, 0) / reviews.length
+          : 0
+        return {
+          ...recipe.serialize(),
+          isFavourite: favouriteRecipesIds.includes(recipe.id),
+          averageRating: avg || 1,
+        }
+      })
+    )
+    return recipesWithFavouriteFlag
   }
 }
