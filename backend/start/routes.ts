@@ -17,7 +17,7 @@ const UsersController = () => import('#controllers/users_controller')
 const FoodPackagesController = () => import('#controllers/food_packages_controller')
 
 //Recipes
-router.get('/recipes', [RecipesController, 'index'])
+router.get('/recipes', [RecipesController, 'getRecipes']).use(middleware.ourAuth())
 router.post('/recipes', [RecipesController, 'store'])
 router.get('/recipes/:id', [RecipesController, 'show'])
 router.put('/recipes/:id', [RecipesController, 'update'])
