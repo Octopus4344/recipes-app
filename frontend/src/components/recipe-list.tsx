@@ -29,7 +29,7 @@ export function RecipeList() {
   return (
     <div className="flex flex-col">
       <RecipeOfTheDay recipe={recipeOfTheDay} />
-      <div className="grid">
+      <div className="grid p-16">
         {remaining.map((recipe) => (
           <RecipeTile recipe={recipe} key={recipe.id} />
         ))}
