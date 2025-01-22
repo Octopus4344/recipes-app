@@ -1,10 +1,10 @@
-"use client"
+"use client";
 import { Recipe } from "@/lib/types";
-import { Heart } from 'lucide-react';
+import { Heart } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchData } from "@/lib/api";
 
-export function FavouriteToggle({ recipe }: { recipe: Recipe }) {
+export function FavouriteToggle({ recipe, color = "gray" }: { recipe: Recipe, color?: string }) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -23,20 +23,18 @@ export function FavouriteToggle({ recipe }: { recipe: Recipe }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (recipe.isFavourite){
+    if (recipe.isFavourite) {
       mutation.mutate("DELETE");
-    }
-    else mutation.mutate("POST")
+    } else mutation.mutate("POST");
   };
-
 
 
   return (
     <button type="submit" onClick={handleSubmit}>
       {recipe.isFavourite ? (
-        <Heart fill="grey" color="grey"/> ):(
-        <Heart color="grey"/>)
+        <Heart fill={color} color={color}/>) : (
+        <Heart color={color} />)
       }
     </button>
-  )
+  );
 }

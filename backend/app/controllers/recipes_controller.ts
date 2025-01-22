@@ -3,6 +3,7 @@ import { updateRecipeValidator } from '#validators/recipe'
 import type { HttpContext } from '@adonisjs/core/http'
 import Amator from '#models/amator'
 import Notification from '#models/notification'
+import Ingredient from '#models/ingredient'
 
 export default class RecipesController {
   async index(_ctx: HttpContext) {
@@ -15,8 +16,56 @@ export default class RecipesController {
     return { message: 'Recipe created.', recipe }
   }
 
-  async show({ params }: HttpContext) {
-    return Recipe.findOrFail(params.id)
+  async show({ params, auth }: HttpContext) {
+    const userId = auth.user?.id
+    if (userId === undefined) {
+      return { message: 'User not authenticated.' }
+    }
+
+    const amator = await Amator.query()
+      .where('userId', userId)
+      .preload('nutritionalProfiles', (query) => {
+        query.preload('category', (subQuery) => {
+          subQuery.where('type', 'type_of_diet')
+        })
+      })
+      .first()
+
+    const recipe = await Recipe.query()
+      .where('id', params.id)
+      .preload('tags')
+      .preload('reviews')
+      .firstOrFail()
+
+    const reviews = await recipe.related('reviews').query()
+    const avg = reviews.length
+      ? reviews.reduce((sum, review) => sum + review.grade, 0) / reviews.length
+      : 0
+
+    const ingredients = await Ingredient.query().where('recipeId', recipe.id)
+
+    if (!amator) {
+      const recipeWithDetails = {
+        ...recipe.serialize(),
+        ingredients: ingredients.map((ingredient) => ingredient.serialize()),
+        averageRating: avg || 1,
+      }
+      return recipeWithDetails
+    }
+
+    const favouriteRecipesIds = await amator
+      .related('favourites')
+      .query()
+      .select('id')
+      .then((results) => results.map((fav) => fav.id))
+
+    const recipeWithDetails = {
+      ...recipe.serialize(),
+      isFavourite: favouriteRecipesIds.includes(recipe.id),
+      ingredients: ingredients.map((ingredient) => ingredient.serialize()),
+      averageRating: avg || 1,
+    }
+    return recipeWithDetails
   }
 
   async getRecipeTags({ params }: HttpContext) {

@@ -38,11 +38,29 @@ export interface Recipe {
   createdAt?: string,
   updatedAt?: string,
   isFavourite?: boolean,
-  averageRating?: number
+  averageRating?: number,
+  tags?: Category[],
+  ingredients?: Ingredient[]
+  reviews?: Review[]
 }
 
 export interface Category {
   id: string;
   type: string;
   name: string;
+}
+
+export interface Ingredient {
+  name: string
+  id: number,
+  calorificValue: number,
+}
+
+export interface Review {
+  id?: string;
+  grade: number;
+  amatorId?: string;
+  review?: string;
+  recipeId?: string;
+
 }

@@ -18,12 +18,11 @@ export function RecipeList() {
     return <p>Error</p>;
   }
 
-  if (isLoading || !recipes) {
+  if (isLoading || !Array.isArray(recipes)) {
     return <div>Loading...</div>;
   }
 
-  console.log(recipes, isLoading, isError);
-
+  console.log("Recipes",recipes)
   const [recipeOfTheDay, ...remaining] = recipes;
 
   return (

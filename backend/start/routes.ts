@@ -20,7 +20,7 @@ const FoodPackagesController = () => import('#controllers/food_packages_controll
 //Recipes
 router.get('/recipes', [RecipesController, 'getRecipes']).use(middleware.ourAuth())
 router.post('/recipes', [RecipesController, 'store'])
-router.get('/recipes/:id', [RecipesController, 'show'])
+router.get('/recipes/:id', [RecipesController, 'show']).use(middleware.ourAuth())
 router.put('/recipes/:id', [RecipesController, 'update'])
 router.delete('/recipes/:id', [RecipesController, 'destroy'])
 router.get('/user/recipes', [RecipesController, 'getUserRecipes']).use(middleware.ourAuth())
