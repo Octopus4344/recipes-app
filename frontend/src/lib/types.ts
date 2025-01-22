@@ -40,3 +40,9 @@ export interface Recipe {
   isFavourite?: boolean,
   averageRating?: number
 }
+
+export interface Category {
+  id: string;
+  type: string;
+  name: string;
+}
