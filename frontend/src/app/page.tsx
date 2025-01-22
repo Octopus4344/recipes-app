@@ -1,68 +1,13 @@
 "use client"
 import { ProtectedRoute } from "@/components/protected-route";
+import { RecipeList } from "@/components/recipe-list";
 
 export default function Home() {
 
 
   return (
     <ProtectedRoute>
-    <div className="flex flex-col">
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    <div>Main page</div>
-    </div>
+      <RecipeList/>
     </ProtectedRoute>
   );
 }

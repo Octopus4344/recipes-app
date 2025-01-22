@@ -24,3 +24,19 @@ interface Restaurant {
   id: string;
   name: string;
 }
+
+export interface Recipe {
+  id: 1,
+  name: string;
+  description: string;
+  preparationTime: number,
+  difficultyLevel: number,
+  isProfessional: boolean,
+  imageUrl: string | null,
+  userId: number,
+  isActive?: boolean,
+  createdAt?: string,
+  updatedAt?: string,
+  isFavourite?: boolean,
+  averageRating?: number
+}
