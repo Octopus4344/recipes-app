@@ -32,4 +32,3 @@ export default class Review extends BaseModel {
   @belongsTo(() => Recipe)
   declare recipe: BelongsTo<typeof Recipe>
 }
-
