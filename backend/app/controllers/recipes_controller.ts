@@ -165,7 +165,19 @@ export default class RecipesController {
       .first()
 
     if (!amator) {
-      return Recipe.query()
+      const recipes = await Recipe.query()
+      return await Promise.all(
+        recipes.map(async (recipe) => {
+          const reviews = await recipe.related('reviews').query()
+          const avg = reviews.length
+            ? reviews.reduce((sum, review) => sum + review.grade, 0) / reviews.length
+            : 0
+          return {
+            ...recipe.serialize(),
+            averageRating: avg || 1,
+          }
+        })
+      )
     }
 
     const profileCategoryIds = amator.nutritionalProfiles.map((profile) => profile.categoryId)

@@ -20,7 +20,7 @@ export default function RecipeDetailsPage() {
   const { user } = useUser();
 
   const { data: recipe, isLoading: isLoading, isError: isError } = useQuery<Recipe>({
-    queryKey: ["recipe"],
+    queryKey: ["recipes"],
     queryFn: async () => {
       return await fetchData(`recipes/${recipeId}`, "GET");
     }

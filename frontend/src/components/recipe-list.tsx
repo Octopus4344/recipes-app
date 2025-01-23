@@ -26,9 +26,9 @@ export function RecipeList() {
   const [recipeOfTheDay, ...remaining] = recipes;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <RecipeOfTheDay recipe={recipeOfTheDay} />
-      <div className="grid p-16">
+      <div className="grid p-16 grid-cols-1 sm:grid-cols-3 space-x-3 gap-3">
         {remaining.map((recipe) => (
           <RecipeTile recipe={recipe} key={recipe.id} />
         ))}

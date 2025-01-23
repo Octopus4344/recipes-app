@@ -47,7 +47,7 @@ export function ReviewDialog({ id }: { id: number }) {
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["recipe"] });
+      queryClient.invalidateQueries({ queryKey: ["recipes"] });
       setStep(0);
       setReview((prev) => ({...prev, grade: 0}));
     },
