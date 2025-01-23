@@ -218,4 +218,23 @@ export default class RecipesController {
 
     return recipesWithFavouriteFlag.sort((a, b) => b.averageRating - a.averageRating)
   }
+
+  async addIngredientToRecipe({ request, params }: HttpContext) {
+    const recipe = await Recipe.findOrFail(params.id)
+    const payload = request.only(['name', 'calorific_value'])
+    const ingredient = await Ingredient.create({ ...payload, recipeId: recipe.id })
+    return { message: 'Ingredient added to recipe.', ingredient }
+  }
+
+  async removeIngredientFromRecipe({ params }: HttpContext) {
+    const ingredient = await Ingredient.findOrFail(params.id)
+    await ingredient.delete()
+    return { message: 'Ingredient removed from recipe.' }
+  }
+
+  async getRecipeIngredients({ params }: HttpContext) {
+    const recipe = await Recipe.findOrFail(params.id)
+    const ingredients = await Ingredient.query().where('recipeId', recipe.id)
+    return ingredients
+  }
 }
