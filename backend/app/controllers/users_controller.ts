@@ -11,7 +11,11 @@ export default class UsersController {
     }
     const amator = await Amator.findByOrFail('userId', userId)
     const favourites = await amator.related('favourites').query()
-    return favourites
+    const recipes = favourites.map((recipe) => ({
+      ...recipe.serialize(),
+      isFavourite: true,
+    }))
+    return recipes
   }
 
   async addRecipeToFavourites({ request, response, auth }: HttpContext) {

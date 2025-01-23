@@ -5,11 +5,11 @@ import { useUser } from "@/context/user-context";
 import { usePathname } from "next/navigation";
 import {
   DropdownMenu,
-  DropdownMenuContent,
+  DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
@@ -18,7 +18,7 @@ export function Navbar() {
   const currentPath = usePathname();
   const router = useRouter();
 
-  const isActive = (path: string) => currentPath === path ? 'text-primary' : 'hover:text-gray-600';
+  const isActive = (path: string) => currentPath === path ? "text-primary" : "hover:text-gray-600";
 
   if (!user || currentPath === "/login" || currentPath === "/register") {
     return (
@@ -28,8 +28,8 @@ export function Navbar() {
 
   const handleLogout = () => {
     logout();
-    router.push("/login")
-  }
+    router.push("/login");
+  };
 
   return (
     <div>
@@ -63,7 +63,12 @@ export function Navbar() {
               <DropdownMenuContent>
                 <DropdownMenuLabel>Menu</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                  <Button variant="ghost" onClick={handleLogout}>Log out</Button>
+                {user.role === "amator" && (
+                  <DropdownMenuItem>
+                    <Link className={isActive("/my-recipes")} href="/my-recipes">My recipes</Link>
+                  </DropdownMenuItem>
+                )}
+                  <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>Log out</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
