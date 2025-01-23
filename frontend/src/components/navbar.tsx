@@ -40,7 +40,9 @@ export function Navbar() {
           </Link>
           <div className="flex flex-wrap items-center space-x-10 xl:space-x-24 left-3">
             <Link className={isActive("/")} href="/">Home</Link>
-            <Link className={isActive("/favourites")} href="/favourites">Favourites</Link>
+            {user.role === "amator" && (
+              <Link className={isActive("/favourites")} href="/favourites">Favourites</Link>
+            )}
             {user?.role === "amator" ? (
                 <Link className={isActive("/chat")} href="/chat">Chat with the chef</Link>
               )
