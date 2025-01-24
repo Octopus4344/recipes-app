@@ -1,9 +1,10 @@
-import Recipe from '#models/recipe'
-import { updateRecipeValidator } from '#validators/recipe'
-import type { HttpContext } from '@adonisjs/core/http'
-import Amator from '#models/amator'
-import Notification from '#models/notification'
-import Ingredient from '#models/ingredient'
+import Recipe from "#models/recipe";
+import { updateRecipeValidator } from "#validators/recipe";
+import type { HttpContext } from "@adonisjs/core/http";
+import Amator from "#models/amator";
+import Notification from "#models/notification";
+import Ingredient from "#models/ingredient";
+import Category from "#models/category";
 
 export default class RecipesController {
   async index(_ctx: HttpContext) {
@@ -71,6 +72,20 @@ export default class RecipesController {
   async getRecipeTags({ params }: HttpContext) {
     const recipe = await Recipe.findOrFail(params.id)
     return { tags: await recipe.related('tags').query(), recipe }
+  }
+
+  async getTags({ params }: HttpContext) {
+    const recipe = await Recipe.findOrFail(params.id)
+    const related = await recipe.related('tags').query().select("id").then((results) => results.map((item) => item.id))
+    const allCategories = await Category.query()
+    return await Promise.all(
+      allCategories.map(async (category) => {
+        return {
+          ...category.serialize(),
+          isAdded: related.includes(category.id),
+        }
+      })
+    )
   }
 
   async addTagsToRecipe({ request, params }: HttpContext) {
@@ -145,8 +160,20 @@ export default class RecipesController {
     if (userId === undefined) {
       return { message: 'User not authenticated.' }
     }
-    const recipes = await Recipe.query().where('userId', userId)
-    return recipes
+    const recipes = await Recipe.query().where('userId', userId).preload('tags')
+    const recipesWithDetails = await Promise.all(
+      recipes.map(async (recipe) => {
+        const reviews = await recipe.related('reviews').query()
+        const avg = reviews.length
+          ? reviews.reduce((sum, review) => sum + review.grade, 0) / reviews.length
+          : 0
+        return {
+          ...recipe.serialize(),
+          averageRating: avg || 1,
+        }
+      })
+    )
+    return recipesWithDetails
   }
 
   async getRecipes({ auth }: HttpContext) {

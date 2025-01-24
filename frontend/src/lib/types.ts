@@ -32,7 +32,7 @@ export interface Recipe {
   preparationTime: number,
   difficultyLevel: number,
   isProfessional: boolean,
-  imageUrl: string | null,
+  imageUrl: string,
   userId: number,
   isActive?: boolean,
   createdAt?: string,
@@ -48,6 +48,7 @@ export interface Category {
   id: string;
   type: string;
   name: string;
+  isAdded?: boolean;
 }
 
 export interface Ingredient {

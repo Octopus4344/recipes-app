@@ -65,6 +65,7 @@ router.get('/recipe_reviews/:id', [ReviewsController, 'recipeReviews'])
 router.post('/recipes_tags/:id', [RecipesController, 'addTagsToRecipe'])
 router.delete('/recipes_tags/:id', [RecipesController, 'destroyTagsFromRecipe'])
 router.get('/recipes_tags/:id', [RecipesController, 'getRecipeTags'])
+router.get('/recipes_tags/categories/:id', [RecipesController, 'getTags'])
 
 //Ingredient recipe
 router.get('/recipe_ingredients/:id', [RecipesController, 'getRecipeIngredients'])
