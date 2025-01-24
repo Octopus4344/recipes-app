@@ -109,3 +109,4 @@ export default class UsersController {
     return { message: 'Profile deleted successfully.' }
   }
 }
+

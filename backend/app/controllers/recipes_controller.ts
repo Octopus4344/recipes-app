@@ -214,7 +214,28 @@ export default class RecipesController {
     const profileCategoryIds = amator.nutritionalProfiles.map((profile) => profile.categoryId)
 
     if (profileCategoryIds.length === 0) {
-      return Recipe.query()
+      const recipes = await Recipe.query()
+      const favouriteRecipesIds = await amator
+        .related('favourites')
+        .query()
+        .select('id')
+        .then((results) => results.map((fav) => fav.id))
+
+      const recipesWithFavouriteFlag = await Promise.all(
+        recipes.map(async (recipe) => {
+          const reviews = await recipe.related('reviews').query()
+          const avg = reviews.length
+            ? reviews.reduce((sum, review) => sum + review.grade, 0) / reviews.length
+            : 0
+          return {
+            ...recipe.serialize(),
+            isFavourite: favouriteRecipesIds.includes(recipe.id),
+            averageRating: avg || 1,
+          }
+        })
+      )
+
+      return recipesWithFavouriteFlag.sort((a, b) => b.averageRating - a.averageRating)
     }
 
     const recipes = await Recipe.query()
