@@ -55,6 +55,7 @@ export interface Ingredient {
   name: string
   id: number,
   calorificValue: number,
+  product?: Product
 }
 
 export interface Review {

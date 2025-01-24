@@ -78,3 +78,5 @@ router.delete('/ingredient_products/:id', [
   IngredientProductController,
   'removeProductFromIngredient',
 ])
+router.get('/products', [IngredientProductController, 'getAllProducts'])
+router.get('/ingredient_products/:id', [IngredientProductController, 'getRecipeIngredients'])

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Category, Ingredient, Recipe, Review } from "@/lib/types";
+import { Category, Ingredient, Product, Recipe, Review } from "@/lib/types";
 import { fetchData } from "@/lib/api";
 import Link from "next/link";
 import { ArrowLeftIcon, TrashIcon } from "lucide-react";
@@ -10,14 +10,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { useUser } from "@/context/user-context";
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { number } from "prop-types";
+import { useRouter } from "next/navigation";
+import { ProductTile } from "@/app/my-recipes/components/product-tile";
 
 
 export function RecipeEditor({ recipeId }: { recipeId?: number }) {
@@ -51,14 +52,6 @@ export function RecipeEditor({ recipeId }: { recipeId?: number }) {
     enabled: !!recipeId
   });
 
-  if (recipeId && isError) {
-    return <p>Error</p>;
-  }
-
-  if (recipeId && (isLoading || !recipe)) {
-    return <div>Loading...</div>;
-  }
-
   useEffect(() => {
     if (recipeId) {
       if (recipe) {
@@ -68,6 +61,15 @@ export function RecipeEditor({ recipeId }: { recipeId?: number }) {
       }
     }
   }, [recipe, recipeId]);
+
+  if (recipeId && isError) {
+    return <p>Error</p>;
+  }
+
+  if (recipeId && (isLoading || !recipe)) {
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <>
@@ -81,7 +83,13 @@ export function RecipeEditor({ recipeId }: { recipeId?: number }) {
             <>
               {currentStep === 3 ? (
                 <CategoriesDataEditor recipe={recipeData} setStep={setStep} edit={!!recipeId} />
-              ) : <div />}
+              ) : (
+                <>
+                  {currentStep === 4 ? (
+                    <ProductsDataEditor recipe={recipeData} edit={!!recipeId} />
+                  ) : <div />}
+                </>
+              )}
             </>
           )}
         </>
@@ -131,7 +139,7 @@ function RecipeDataEditor({ recipe, setRecipe, setStep, edit }: {
         name: string;
       }
     }) => {
-      return await fetchData("recipes", edit ? "PUT" : "POST",
+      return await fetchData(edit ? `recipes/${recipe.id}` : "recipes", edit ? "PUT" : "POST",
         { body: JSON.stringify(payload) }
       );
     },
@@ -142,7 +150,7 @@ function RecipeDataEditor({ recipe, setRecipe, setStep, edit }: {
       setStep(2);
     },
     onError: (error) => {
-      alert(error.message || "Something went wrong");
+      alert(error.message || "Data incomplete");
     }
   });
 
@@ -158,7 +166,14 @@ function RecipeDataEditor({ recipe, setRecipe, setStep, edit }: {
         imageUrl: recipe.imageUrl,
         name: recipe.name
       };
-      mutation.mutate({ payload });
+      if (user.role === "restaurant" && !edit) {
+        if (confirm("Are you sure you want to add this \n" +
+          "recipe? According to our policies your restaurant will be\n" +
+          "obligated to serve your active recipes. Do you want\n" +
+          "to add this recipe?")) {
+          mutation.mutate({ payload });
+        }
+      } else mutation.mutate({ payload });
     } else {
       alert("You can't add any recipes");
     }
@@ -251,8 +266,8 @@ function RecipeDataEditor({ recipe, setRecipe, setStep, edit }: {
             }
           />
           <Image src={recipe.imageUrl || "/placeholder.svg"} alt={"Image of the recipe"} width={600} height={400} />
+          <Button className="max-w-36" onClick={handleSubmit}>Next</Button>
         </div>
-        <Button onClick={handleSubmit}>Next</Button>
       </div>
     </div>
   )
@@ -336,6 +351,16 @@ function IngredientsDataEditor({ recipe, edit, setStep }: {
 
   };
 
+  const handleNext = () => {
+    console.log("qqq");
+    if (ingredients.length < 1) {
+      alert("Choose at least one ingredient");
+      return;
+    }
+    setStep(3);
+    console.log("ggg");
+  };
+
   return (
     <div className="flex py-8 px-24 space-x-8 space-y-4 items-center justify-between">
       <div className="flex flex-col">
@@ -389,7 +414,7 @@ function IngredientsDataEditor({ recipe, edit, setStep }: {
             </div>
           </CardContent>
         </Card>
-        <Button onClick={() => setStep(3)}>Next</Button>
+        <Button className="max-w-36" onClick={() => handleNext()}>Next</Button>
       </div>
     </div>
   )
@@ -402,6 +427,8 @@ function CategoriesDataEditor({ recipe, setStep, edit }: {
   edit: boolean,
 }) {
   const queryClient = useQueryClient();
+  const { user } = useUser();
+  const router = useRouter();
 
   const { data: categories, isLoading: isLoading, isError: isError } = useQuery<Category[]>({
     queryKey: ["categories"],
@@ -410,23 +437,7 @@ function CategoriesDataEditor({ recipe, setStep, edit }: {
     }
   });
 
-  const deletion = useMutation({
-    mutationFn: async ({ payload }: {
-      payload: {
-        categories: number[]
-      }
-    }) => {
-      return await fetchData(`recipes_tags/${recipe.id}`, "DELETE",
-        { body: JSON.stringify(payload) }
-      );
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["ingredients"] });
-    },
-    onError: (error) => {
-      alert(error.message || "Something went wrong");
-    }
-  });
+
 
   const mutation = useMutation({
     mutationFn: async ({ payload, method }: {
@@ -471,6 +482,18 @@ function CategoriesDataEditor({ recipe, setStep, edit }: {
     mutation.mutate({ payload, method: "POST" });
   };
 
+  const handleNext = () => {
+    if (categories.length < 1) {
+      alert("Choose at least one category");
+      return;
+    }
+    if (user?.role === "amator") setStep(4);
+    else {
+      alert(edit ? "Data has been changed" : "Recipe created successfully");
+      router.push("/my-recipes");
+    }
+  };
+
   const MyColumn = ({ type }: {
     type: "type_of_diet"
       |
@@ -484,7 +507,7 @@ function CategoriesDataEditor({ recipe, setStep, edit }: {
         <p className="font-bold text-lg py-4">{type}</p>
         <ul className="flex flex-col space-y-4">
           {filteredCategories.map((category) => (
-            <div className="flex space-x-1.5 items-center">
+            <div key={category.id} className="flex space-x-1.5 items-center">
               <Checkbox key={category.id} id={"category" + category.id} checked={category.isAdded} onClick={category.isAdded ? () => handleDelete(Number(category.id)) : () => handleAdd(Number(category.id))} />
               <Label className="text-lg" htmlFor={"category" + category.id}>{category.name}</Label>
             </div>
@@ -495,28 +518,125 @@ function CategoriesDataEditor({ recipe, setStep, edit }: {
   };
 
   return (
+    <div className="flex flex-col items-center justify-center">
     <div className="flex justify-center gap-3.5">
     <MyColumn type={"type_of_diet"}></MyColumn>
     <MyColumn type={"type_of_meal"}></MyColumn>
     <MyColumn type={"other"}></MyColumn>
     </div>
+      <Button onClick={() => handleNext()}>Next</Button>
+    </div>
   );
 }
 
-function ReviewComponent({ review }: { review: Review }) {
+function ProductsDataEditor({ recipe, edit }: {
+  recipe: Recipe,
+  edit: boolean,
+}) {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const { data: ingredients, isLoading: isLoading, isError: isError } = useQuery<Ingredient[]>({
+    queryKey: ["ingredients"],
+    queryFn: async () => {
+      return await fetchData(`ingredient_products/${recipe.id}`, "GET");
+    }
+  });
+
+  const { data: products, isLoading: isLoadingProducts, isError: isErrorProducts } = useQuery<Product[]>({
+    queryKey: ["products"],
+    queryFn: async () => {
+      return await fetchData(`products`, "GET");
+    }
+  });
+
+
+  const mutation = useMutation({
+    mutationFn: async ({ payload, method }: {
+      payload: {
+        productId: number,
+        ingredientId: number,
+      },
+      method: "POST" | "DELETE"
+    }) => {
+      return await fetchData(`ingredient_products/${payload.ingredientId}`, method,
+        { body: JSON.stringify({ productId: payload.productId }) },
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ingredients"] });
+    },
+    onError: (error) => {
+      alert(error.message || "Something went wrong");
+    }
+  });
+
+  if (isError || isErrorProducts) {
+    return <p>Error</p>;
+  }
+
+  if (isLoading || isLoadingProducts || !products || !ingredients) {
+    return <div>Loading...</div>;
+  }
+
+
+  const handleDelete = async (ingredientId: number, productId: number) => {
+    const payload = {
+      productId: productId,
+      ingredientId: ingredientId
+
+    };
+    mutation.mutate({ payload, method: "DELETE" });
+  };
+
+  const handleAdd = async (ingredientId: number, productId: number) => {
+    const payload = {
+      productId: productId,
+      ingredientId: ingredientId
+
+    };
+    mutation.mutate({ payload, method: "POST" });
+  };
+
+  const handleNext = () => {
+      alert(edit ? "Data has been changed" : "Recipe created successfully");
+      router.push("/my-recipes");
+  };
+
+
   return (
-    <div className="flex space-x-1.5 ">
-      <div className="flex space-x-3 justify-center items-start">
-        <Image alt="Profile photo" src="/profile-pic.svg" width={60} height={60} />
-        <div className="flex flex-col">
-          <p className="font-bold">{review.amatorId}</p>
-          <Rating className="inline-flex" size={25} readonly={true} initialValue={review.grade} />
-        </div>
-        <ScrollArea className="pt-1 text-gray-600 h-[100px]">
-          <div>{review.review}</div>
-        </ScrollArea>
+    <div className="flex flex-col justify-center gap-3.5 m-8">
+      <p className="text-xl font-bold ">{edit ? "Edit products" : "Add products"}</p>
+      <div className="flex gap-3.5">
+        <Card className="min-w-48 p-4">
+          <CardTitle className="text-md">Added</CardTitle>
+          <CardContent>
+            <ScrollArea>
+              {ingredients.map((ingredient) => (
+                (ingredient.product && (
+                    <div className="flex justify-center items-center" key={ingredient.id}>
+                      <p
+                        key={ingredient.id}>{ingredient.name} - {ingredient.product.name} ({ingredient.product.producerId})
+                      </p>
+                      <Button variant="ghost" onClick={() => handleDelete(ingredient.id, Number(ingredient.product?.id))}>
+                        <TrashIcon />
+                      </Button>
+                    </div>
+                  )
+                )
+              ))}
+            </ScrollArea>
+          </CardContent>
+        </Card>
+        <Button onClick={() => handleNext()}>Confirm</Button>
+      </div>
+      <div className="grid grid-cols-3 gap-6">
+        {products.map((product) => (
+          <ProductTile product={product} key={product.id} ingredients={ingredients} handleAdd={handleAdd} />
+        ))}
       </div>
     </div>
-  )
-    ;
+  );
 }
+
+
