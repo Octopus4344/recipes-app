@@ -13,6 +13,7 @@ const FoodPackagesProductsController = () =>
 const AuthController = () => import('#controllers/auth_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const IngredientProductController = () => import('#controllers/ingredient_product_controller')
 const ReviewsController = () => import('#controllers/reviews_controller')
 const UsersController = () => import('#controllers/users_controller')
 const FoodPackagesController = () => import('#controllers/food_packages_controller')
@@ -71,3 +72,9 @@ router.get('/recipes_tags/categories/:id', [RecipesController, 'getTags'])
 router.get('/recipe_ingredients/:id', [RecipesController, 'getRecipeIngredients'])
 router.post('/recipe_ingredients/:id', [RecipesController, 'addIngredientToRecipe'])
 router.delete('/recipe_ingredients/:id', [RecipesController, 'removeIngredientFromRecipe'])
+//Ingredient product
+router.post('/ingredient_products/:id', [IngredientProductController, 'addProductToIngredient'])
+router.delete('/ingredient_products/:id', [
+  IngredientProductController,
+  'removeProductFromIngredient',
+])
