@@ -63,5 +63,14 @@ export interface Review {
   amatorId?: string;
   review?: string;
   recipeId?: string;
+}
 
+export interface Product {
+  id?: string;
+  name: string;
+  imageUrl: string;
+  producerId: number;
+  producer?: FoodProducer;
+  isActive: boolean;
+  ingredients?: Ingredient[];
 }
