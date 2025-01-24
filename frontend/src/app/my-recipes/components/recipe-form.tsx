@@ -483,7 +483,7 @@ function CategoriesDataEditor({ recipe, setStep, edit }: {
   };
 
   const handleNext = () => {
-    if (categories.length < 1) {
+    if (categories.filter((category) => category.isAdded).length < 1) {
       alert("Choose at least one category");
       return;
     }

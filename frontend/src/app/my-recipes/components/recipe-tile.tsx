@@ -6,7 +6,7 @@ import { TagList } from "@/components/tag-list";
 
 export function RecipeTile({ recipe }: { recipe: Recipe }) {
   return (
-      <div className="rounded-3xl p-4 shadow-lg transition hover:scale-110 max-w-80 h-[480px]">
+      <div className={`rounded-3xl p-4 shadow-lg transition hover:scale-110 max-w-80 h-[480px] ${recipe.isActive ? "" : "grayscale"}` }>
         <div className="relative w-full h-64">
           <Image className="rounded-lg" layout="fill" objectFit="cover" src={recipe.imageUrl || "/placeholder.svg"} alt={"Image of the recipe"} />
         </div>

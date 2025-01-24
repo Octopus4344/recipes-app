@@ -1,6 +1,6 @@
 "use client";
 import { Recipe } from "@/lib/types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchData } from "@/lib/api";
 import { RecipeTile } from "./recipe-tile";
 import {
@@ -13,12 +13,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
-import { Rating } from "react-simple-star-rating";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { useUser } from "@/context/user-context";
 
 export function RecipeList() {
+  const { user } = useUser();
+  const queryClient = useQueryClient();
 
   const { data: recipes, isLoading: isLoading, isError: isError } = useQuery<Recipe[]>({
     queryKey: ["my-recipes"],
@@ -26,6 +28,54 @@ export function RecipeList() {
       return await fetchData("user/recipes", "GET");
     }
   });
+
+  const mutation = useMutation({
+    mutationFn: async ({ payload, params }: {
+      payload: {
+          difficultyLevel: number;
+          preparationTime: number;
+          description: string;
+          isActive: boolean;
+          userId: number;
+          isProfessional: boolean;
+          imageUrl: string;
+          name: string;
+      },
+      params: {
+        id: number;
+      }
+    }) => {
+      return await fetchData(`recipes/${params.id}`, "PUT",
+        { body: JSON.stringify(payload) }
+      );
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["my-recipes"] });
+      console.log(data);
+    },
+    onError: (error) => {
+      alert(error.message || "Something went wrong");
+    }
+  });
+
+  const toggleActivation = async (recipe: Recipe) => {
+    const payload = {
+      isActive: !recipe.isActive,
+      difficultyLevel: recipe.difficultyLevel,
+      preparationTime: recipe.preparationTime,
+      description: recipe.description,
+      userId: Number(user?.id),
+      isProfessional: user?.role !== "amator",
+      imageUrl: recipe.imageUrl,
+      name: recipe.name
+    };
+    const params = {
+      id: recipe.id,
+    }
+    if (confirm(recipe.isActive ? "Are you sure you want to deactivate this recipe?" : "Are you sure you want to activate this recipe?")) {
+      mutation.mutate({ payload, params });
+    }
+  }
 
   if (isError) {
     return <p>Error</p>;
@@ -52,7 +102,18 @@ export function RecipeList() {
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>{recipe.name}</AlertDialogTitle>
+                  <AlertDialogTitle className="flex justify-between">
+                    <p>{recipe.name}</p>
+                    {user?.role === "restaurant" && (
+                      <Button variant="destructive" onClick={() => toggleActivation(recipe)}>
+                        {recipe.isActive ? (
+                          <p>Deactivate</p>
+                        ) : (
+                          <p>Activate</p>
+                        )}
+                      </Button>
+                    )}
+                  </AlertDialogTitle>
                   <AlertDialogDescription asChild={true}>
                     <div className="relative h-48 justify-center">
                       <Image className="rounded-lg" layout="fill" objectFit="cover"
