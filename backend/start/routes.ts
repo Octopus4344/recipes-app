@@ -80,3 +80,7 @@ router.delete('/ingredient_products/:id', [
 ])
 router.get('/products', [IngredientProductController, 'getAllProducts'])
 router.get('/ingredient_products/:id', [IngredientProductController, 'getRecipeIngredients'])
+//Nutritional Profiles
+router.get('/user/nutritional_profiles', [UsersController, 'getProfiles']).use(middleware.ourAuth())
+router.post('/user/nutritional_profiles', [UsersController, 'addProfile']).use(middleware.ourAuth())
+router.delete('/user/nutritional_profiles', [UsersController, 'removeProfile']).use(middleware.ourAuth())

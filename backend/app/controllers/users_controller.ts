@@ -2,7 +2,8 @@
 
 import Amator from '#models/amator'
 import { HttpContext } from '@adonisjs/core/http'
-import Category from "#models/category";
+import Category from '#models/category'
+import NutritionalProfile from "#models/nutritional_profile";
 
 export default class UsersController {
   async getUserFavourites({ auth }: HttpContext) {
@@ -52,14 +53,13 @@ export default class UsersController {
     }
     const amator = await Amator.findByOrFail('userId', userId)
 
-    const related = await amator
-      .related('nutritionalProfiles')
-      .query()
-      .where('type', 'type_of_diet')
-      .select('id')
-      .then((results) => results.map((item) => item.id))
+    const related = await NutritionalProfile.query()
+      .where('fk_amator_id', amator.id)
+      .select('fk_category_id')
+      .then((profiles) => profiles.map((profile) => profile.categoryId))
 
-    const allCategories = await Category.query()
+    // return related
+    const allCategories = await Category.query().where('type', 'type_of_diet')
     return await Promise.all(
       allCategories.map(async (category) => {
         return {
@@ -69,6 +69,7 @@ export default class UsersController {
       })
     )
   }
+
   async addProfile({ request, auth, response }: HttpContext) {
     const userId = auth.user?.id
     if (userId === undefined) {
@@ -96,13 +97,15 @@ export default class UsersController {
     if (!payload.categoryId) {
       return { message: 'No tags to add.' }
     }
-    const profile = await amator.related('nutritionalProfiles').query().where('fk_category_id', payload.categoryId).first()
+    const profile = await amator
+      .related('nutritionalProfiles')
+      .query()
+      .where('categoryId', payload.categoryId)
+      .first()
     if (!profile) {
       return { message: 'No profile found' }
     }
     await profile.delete()
     return { message: 'Profile deleted successfully.' }
   }
-
-
 }

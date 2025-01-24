@@ -68,6 +68,11 @@ export function Navbar() {
                     <Link className={isActive("/my-recipes")} href="/my-recipes">My recipes</Link>
                   </DropdownMenuItem>
                 )}
+                {user.role === "amator" && (
+                  <DropdownMenuItem>
+                    <Link className={isActive("/my-profile")} href="/my-profile">My profile</Link>
+                  </DropdownMenuItem>
+                )}
                   <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>Log out</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

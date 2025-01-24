@@ -22,8 +22,13 @@ export function RecipeList() {
     return <div>Loading...</div>;
   }
 
+  if (recipes.length === 0) {
+    return <p className="text-gray-500 font-bold text-lg m-10">Sorry! No recipes found for you</p>
+  }
+
   console.log("Recipes",recipes)
   const [recipeOfTheDay, ...remaining] = recipes;
+
 
   return (
     <div className="flex flex-col w-full">
