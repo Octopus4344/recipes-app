@@ -396,6 +396,13 @@ export default class extends BaseSeeder {
 
       {
         grade: 4,
+        review: 'OK',
+        amatorId: amators[2].id,
+        recipeId: recipes[0].id,
+      },
+
+      {
+        grade: 4,
         review: 'Dobre',
         amatorId: amators[2].id,
         recipeId: recipes[1].id,

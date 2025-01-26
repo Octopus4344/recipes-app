@@ -30,7 +30,7 @@ test.group('Authentication', () => {
 })
 
 test.group('Favourites', () => {
-  test('add to favourites', async ({ client }) => {
+  test('add to favourites | id:PT-fav-1', async ({ client }) => {
     const addFavouriteResponse = await client
       .post('user/favourite?recipeId=1')
       .header('cookie', `token=${token}`)
@@ -38,7 +38,7 @@ test.group('Favourites', () => {
     addFavouriteResponse.assertStatus(200)
   })
 
-  test('add to favourites doubled', async ({ client, assert }) => {
+  test('add to favourites doubled | id:PT-fav-2', async ({ client, assert }) => {
     const myFavouritesResponseBefore = await client
       .get('user/favourite')
       .header('cookie', `token=${token}`)
@@ -57,14 +57,39 @@ test.group('Favourites', () => {
     )
   })
 
-  test('remove recipe', async ({ client, assert }) => {
-    await client.post('user/favourite?recipeId=3').header('cookie', `token=${token}`)
+
+  test('remove nonexistent favourite | id:PT-fav4', async ({ assert, client }) => {
+
+    const myFavouritesResponse = await client
+    .get('user/favourite')
+    .header('cookie', `token=${token}`)
+
+
+    const deleteResponse = await client
+      .delete('user/favourite?recipeId=3')
+      .header('cookie', `token=${token}`)
+
+    const myFavouritesResponseAfterDelete = await client
+    .get('user/favourite')
+    .header('cookie', `token=${token}`)
+
+
+    assert.equal(
+      myFavouritesResponse.body().length - myFavouritesResponseAfterDelete.body().length,
+      0
+    )
+
+    deleteResponse.assertStatus(200)
+  })
+
+  test('remove recipe | id:PT-fav-3 / PT-fav-5', async ({ client, assert }) => {
+    await client.post('user/favourite?recipeId=4').header('cookie', `token=${token}`)
 
     const myFavouritesResponse = await client
       .get('user/favourite')
       .header('cookie', `token=${token}`)
 
-    await client.delete('user/favourite?recipeId=3').header('cookie', `token=${token}`)
+    await client.delete('user/favourite?recipeId=4').header('cookie', `token=${token}`)
 
     const myFavouritesResponseAfterDelete = await client
       .get('user/favourite')
@@ -74,14 +99,5 @@ test.group('Favourites', () => {
       myFavouritesResponse.body().length - myFavouritesResponseAfterDelete.body().length,
       1
     )
-  })
-
-  test('remove nonexistent', async ({ client }) => {
-    const deleteResponse = await client
-      .delete('user/favourite?recipeId=5')
-      .header('cookie', `token=${token}`)
-
-    console.log(deleteResponse.headers())
-    deleteResponse.assertStatus(200)
   })
 })
