@@ -49,7 +49,7 @@ export default class RecipesController {
       const recipeWithDetails = {
         ...recipe.serialize(),
         ingredients: ingredients.map((ingredient) => ingredient.serialize()),
-        averageRating: avg || 1,
+        averageRating: avg || 0,
       }
       return recipeWithDetails
     }
@@ -64,7 +64,7 @@ export default class RecipesController {
       ...recipe.serialize(),
       isFavourite: favouriteRecipesIds.includes(recipe.id),
       ingredients: ingredients.map((ingredient) => ingredient.serialize()),
-      averageRating: avg || 1,
+      averageRating: avg || 0,
     }
     return recipeWithDetails
   }
@@ -173,7 +173,7 @@ export default class RecipesController {
           : 0
         return {
           ...recipe.serialize(),
-          averageRating: avg || 1,
+          averageRating: avg || 0,
         }
       })
     )
@@ -205,7 +205,7 @@ export default class RecipesController {
             : 0
           return {
             ...recipe.serialize(),
-            averageRating: avg || 1,
+            averageRating: avg || 0,
           }
         })
       )
@@ -230,7 +230,7 @@ export default class RecipesController {
           return {
             ...recipe.serialize(),
             isFavourite: favouriteRecipesIds.includes(recipe.id),
-            averageRating: avg || 1,
+            averageRating: avg || 0,
           }
         })
       )
@@ -263,7 +263,7 @@ export default class RecipesController {
         return {
           ...recipe.serialize(),
           isFavourite: favouriteRecipesIds.includes(recipe.id),
-          averageRating: avg || 1,
+          averageRating: avg || 0,
         }
       })
     )
