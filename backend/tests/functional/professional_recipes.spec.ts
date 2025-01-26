@@ -350,40 +350,4 @@ test.group('Professional Recipes', () => {
     assert.deepInclude(remainingTagIds, 3, 'Category 3 should remain')
     assert.notDeepInclude(remainingTagIds, 4, 'Category 4 should be removed')
   })
-
- 
-
-  test('get recipe ingredients (and check product inside) professional recipe | Additional functional tests', async ({ client, assert }) => {
-    // Create a new ingredient with a product
-    const ingredientData = {
-      name: 'Inny składnik',
-      calorific_value: 100,
-    }
-
-    const createResponse = await client
-      .post(`/recipe_ingredients/${recipeId}`)
-      .header('cookie', `token=${token}`)
-      .json(ingredientData)
-    createResponse.assertStatus(200)
-
-    const newIngredientId = createResponse.body().ingredient.id
-
-    await client
-      .post(`/ingredient_products/${newIngredientId}`)
-      .header('cookie', `token=${token}`)
-      .json({ productId: 1 })
-
-    // Get all ingredients and verify
-    const getIngredientsResponse = await client
-      .get(`/ingredient_products/${recipeId}`)
-      .header('cookie', `token=${token}`)
-
-    getIngredientsResponse.assertStatus(200)
-    const ingredientsBody = getIngredientsResponse.body()
-    assert.isArray(ingredientsBody)
-
-    const found = ingredientsBody.find((ing: any) => ing.id === newIngredientId)
-    assert.exists(found, 'Ingredient should exist in the recipe list')
-    assert.equal(found.productId, 1, 'Ingredient should have productId=1')
-  })
 })

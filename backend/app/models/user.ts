@@ -1,12 +1,11 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany, hasOne, manyToMany } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasMany, hasOne } from '@adonisjs/lucid/orm'
 import type { HasMany, HasOne } from '@adonisjs/lucid/types/relations'
 import Cook from '#models/cook'
 import Amator from '#models/amator'
 import Restaurant from '#models/restaurant'
 import FoodProducer from '#models/food_producer'
 import Notification from '#models/notification'
-import Favourite from '#models/favourite'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
