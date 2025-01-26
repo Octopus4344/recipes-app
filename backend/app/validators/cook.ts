@@ -1,6 +1,6 @@
 import vine from '@vinejs/vine'
 
-const cookValidatorSchema =   vine.object({
+const cookValidatorSchema = vine.object({
   firstName: vine.string(),
   lastName: vine.string(),
   userId: vine.number(),

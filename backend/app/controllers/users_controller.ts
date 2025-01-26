@@ -3,7 +3,7 @@
 import Amator from '#models/amator'
 import { HttpContext } from '@adonisjs/core/http'
 import Category from '#models/category'
-import NutritionalProfile from "#models/nutritional_profile";
+import NutritionalProfile from '#models/nutritional_profile'
 
 export default class UsersController {
   async getUserFavourites({ auth }: HttpContext) {
@@ -109,4 +109,3 @@ export default class UsersController {
     return { message: 'Profile deleted successfully.' }
   }
 }
-

@@ -3,7 +3,6 @@ import { test } from '@japa/runner'
 let token: string
 let recipeId: number
 
-
 test.group('Authentication', () => {
   test('register and login', async ({ client }) => {
     // Register and login (preconditions)
@@ -51,7 +50,6 @@ test.group('Professional Recipes', () => {
     recipeResponse.assertStatus(200)
     recipeId = recipeResponse.body().recipe.id
 
-  
     const payload = { categories: [3, 7] }
     const response = await client
       .post(`/recipes_tags/${recipeId}`)
@@ -71,8 +69,6 @@ test.group('Professional Recipes', () => {
     assert.deepInclude(addedTagIds, 3)
     assert.deepInclude(addedTagIds, 7)
   })
-
-
 
   test('add ingredient to professional recipe | id: PT-ProfRec-1', async ({ client, assert }) => {
     // Create a new recipe
@@ -110,8 +106,6 @@ test.group('Professional Recipes', () => {
     assert.equal(body.ingredient.name, ingredientData.name)
   })
 
-
-
   test('create a professional recipe (missing data) | id: PT-ProfRec-2', async ({ client }) => {
     const invalidData = {
       description: 'opis przepisu',
@@ -127,11 +121,8 @@ test.group('Professional Recipes', () => {
     response.assertStatus(422)
   })
 
-
   test('get a created recipe | Additional functional test', async ({ client, assert }) => {
-    const response = await client
-      .get(`/recipes/${recipeId}`)
-      .header('cookie', `token=${token}`)
+    const response = await client.get(`/recipes/${recipeId}`).header('cookie', `token=${token}`)
 
     response.assertStatus(200)
 
@@ -176,9 +167,9 @@ test.group('Professional Recipes', () => {
       .post(`/recipes_tags/${recipeId}`)
       .header('cookie', `token=${token}`)
       .json(payload)
-    
-      tagsResponse.assertStatus(200)
-      tagsResponse.assertBodyContains({ message: 'Tags added to recipe.' })
+
+    tagsResponse.assertStatus(200)
+    tagsResponse.assertBodyContains({ message: 'Tags added to recipe.' })
 
     const getTagsResponse = await client
       .get(`/recipes_tags/${recipeId}`)
@@ -217,9 +208,7 @@ test.group('Professional Recipes', () => {
     assert.equal(body.recipe.isProfessional, updatedData.isProfessional)
     assert.equal(body.recipe.isActive, updatedData.isActive)
     assert.equal(body.recipe.imageUrl, updatedData.imageUrl)
-
   })
-
 
   test('update a recipe (lacking data) | id: PT-ProfRec-5', async ({ client }) => {
     const updatedData = {
@@ -235,15 +224,10 @@ test.group('Professional Recipes', () => {
       .json(updatedData)
 
     response.assertStatus(422)
-
   })
 
   test('desactivate recipe | id: PT-ProfRec-6', async ({ client, assert }) => {
-
-    const getResponse = await client
-    .get(`/recipes/${recipeId}`)
-    .header('cookie', `token=${token}`)
-
+    const getResponse = await client.get(`/recipes/${recipeId}`).header('cookie', `token=${token}`)
 
     const body = getResponse.body()
     assert.equal(body.id, recipeId)
@@ -251,7 +235,7 @@ test.group('Professional Recipes', () => {
     assert.exists(body.description)
     assert.exists(body.preparationTime)
     assert.exists(body.difficultyLevel)
-      
+
     const updatedData = {
       name: body.name,
       description: body.description,
@@ -270,13 +254,8 @@ test.group('Professional Recipes', () => {
     response.assertStatus(200)
   })
 
-
   test('resactivate recipe | id: PT-ProfRec-7', async ({ client, assert }) => {
-
-    const getResponse = await client
-    .get(`/recipes/${recipeId}`)
-    .header('cookie', `token=${token}`)
-
+    const getResponse = await client.get(`/recipes/${recipeId}`).header('cookie', `token=${token}`)
 
     const body = getResponse.body()
     assert.equal(body.id, recipeId)
@@ -284,7 +263,7 @@ test.group('Professional Recipes', () => {
     assert.exists(body.description)
     assert.exists(body.preparationTime)
     assert.exists(body.difficultyLevel)
-      
+
     const updatedData = {
       name: body.name,
       description: body.description,
@@ -303,7 +282,10 @@ test.group('Professional Recipes', () => {
     response.assertStatus(200)
   })
 
-  test('remove categories from professional recipe | Additional functional tests', async ({ client, assert }) => {
+  test('remove categories from professional recipe | Additional functional tests', async ({
+    client,
+    assert,
+  }) => {
     // Create a new recipe
     const recipeData = {
       name: 'Przepis z kategoriami',

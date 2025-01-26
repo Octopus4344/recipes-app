@@ -9,10 +9,10 @@ test.group('Register validator tests', () => {
       username: 'johndoe',
       email: 'john.doe@example.com',
       password: 'securePassword123',
-    };
+    }
 
-    assert.isNull((await registerValidator.tryValidate(registerData))[0]);
-  });
+    assert.isNull((await registerValidator.tryValidate(registerData))[0])
+  })
 
   test('validate register data with short password', async ({ assert }) => {
     const registerData = {
@@ -21,20 +21,20 @@ test.group('Register validator tests', () => {
       username: 'johndoe',
       email: 'john.doe@example.com',
       password: '123',
-    };
+    }
 
-    assert.isNotNull((await registerValidator.tryValidate(registerData))[0]);
-  });
+    assert.isNotNull((await registerValidator.tryValidate(registerData))[0])
+  })
 
   test('validate register data missing required fields', async ({ assert }) => {
     const registerData = {
       firstName: 'John',
       email: 'john.doe@example.com',
       password: 'securePassword123',
-    };
+    }
 
-    assert.isNotNull((await registerValidator.tryValidate(registerData))[0]);
-  });
+    assert.isNotNull((await registerValidator.tryValidate(registerData))[0])
+  })
 
   test('validate register data with invalid email', async ({ assert }) => {
     const registerData = {
@@ -43,8 +43,8 @@ test.group('Register validator tests', () => {
       username: 'johndoe',
       email: 'invalid-email',
       password: 'securePassword123',
-    };
+    }
 
-    assert.isNotNull((await registerValidator.tryValidate(registerData))[0]);
-  });
-});
+    assert.isNotNull((await registerValidator.tryValidate(registerData))[0])
+  })
+})

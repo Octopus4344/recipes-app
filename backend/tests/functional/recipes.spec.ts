@@ -50,7 +50,6 @@ test.group('Recipes', () => {
     recipeResponse.assertStatus(200)
     recipeId = recipeResponse.body().recipe.id
 
-  
     const payload = { categories: [1, 5] }
     const response = await client
       .post(`/recipes_tags/${recipeId}`)
@@ -70,8 +69,6 @@ test.group('Recipes', () => {
     assert.deepInclude(addedTagIds, 1)
     assert.deepInclude(addedTagIds, 5)
   })
-
-
 
   test('add ingredient to recipe | id: PT-Rec-1', async ({ client, assert }) => {
     // Create a new recipe
@@ -117,11 +114,9 @@ test.group('Recipes', () => {
       .header('cookie', `token=${token}`)
       .json({ productId: 1 })
 
-
     response.assertStatus(200)
     response.assertBodyContains({ message: 'Product added to ingredient.' })
   })
-
 
   test('create a recipe (missing data) | id: PT-Rec-2', async ({ client }) => {
     const invalidData = {
@@ -138,11 +133,8 @@ test.group('Recipes', () => {
     response.assertStatus(422)
   })
 
-
   test('get a created recipe', async ({ client, assert }) => {
-    const response = await client
-      .get(`/recipes/${recipeId}`)
-      .header('cookie', `token=${token}`)
+    const response = await client.get(`/recipes/${recipeId}`).header('cookie', `token=${token}`)
 
     response.assertStatus(200)
 
@@ -187,9 +179,9 @@ test.group('Recipes', () => {
       .post(`/recipes_tags/${recipeId}`)
       .header('cookie', `token=${token}`)
       .json(payload)
-    
-      tagsResponse.assertStatus(200)
-      tagsResponse.assertBodyContains({ message: 'Tags added to recipe.' })
+
+    tagsResponse.assertStatus(200)
+    tagsResponse.assertBodyContains({ message: 'Tags added to recipe.' })
 
     const getTagsResponse = await client
       .get(`/recipes_tags/${recipeId}`)
@@ -228,9 +220,7 @@ test.group('Recipes', () => {
     assert.equal(body.recipe.isProfessional, updatedData.isProfessional)
     assert.equal(body.recipe.isActive, updatedData.isActive)
     assert.equal(body.recipe.imageUrl, updatedData.imageUrl)
-
   })
-
 
   test('update a recipe (lacking data) | id: PT-Rec-6', async ({ client }) => {
     const updatedData = {
@@ -246,10 +236,12 @@ test.group('Recipes', () => {
       .json(updatedData)
 
     response.assertStatus(422)
-
   })
 
-  test('remove categories from recipe | Additional functional tests', async ({ client, assert }) => {
+  test('remove categories from recipe | Additional functional tests', async ({
+    client,
+    assert,
+  }) => {
     // Create a new recipe
     const recipeData = {
       name: 'Przepis z kategoriami',
@@ -297,12 +289,10 @@ test.group('Recipes', () => {
     assert.notDeepInclude(remainingTagIds, 4, 'Category 4 should be removed')
   })
 
- 
-
-
-
-
-  test('get recipe ingredients (and check product inside) | Additional functional tests', async ({ client, assert }) => {
+  test('get recipe ingredients (and check product inside) | Additional functional tests', async ({
+    client,
+    assert,
+  }) => {
     // Create a new ingredient with a product
     const ingredientData = {
       name: 'Inny składnik',

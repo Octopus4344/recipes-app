@@ -31,13 +31,10 @@ test.group('Food Packages', () => {
   })
 
   test('create a new food package | id: PT-Pckg-1', async ({ client }) => {
-    const response = await client
-      .post('/food_packages')
-      .header('cookie', `token=${token}`)
-      .json({
-        name: 'Paczka Testowa',
-        recipeId: 1,
-      })
+    const response = await client.post('/food_packages').header('cookie', `token=${token}`).json({
+      name: 'Paczka Testowa',
+      recipeId: 1,
+    })
 
     response.assertStatus(200)
     response.assertBodyContains({ name: 'Paczka Testowa' })
@@ -45,12 +42,12 @@ test.group('Food Packages', () => {
     createdPackageId = response.body().id
   })
 
-  test('fail to create a new food package with invalid data | id: PT-Pckg-2', async ({ assert, client }) => {
+  test('fail to create a new food package with invalid data | id: PT-Pckg-2', async ({
+    assert,
+    client,
+  }) => {
     try {
-      await client
-        .post('/food_packages')
-        .header('cookie', `token=${token}`)
-        .json({})
+      await client.post('/food_packages').header('cookie', `token=${token}`).json({})
 
       assert.fail
     } catch {
@@ -59,9 +56,7 @@ test.group('Food Packages', () => {
   })
 
   test('get user food packages', async ({ client }) => {
-    const response = await client
-      .get('/user/food_packages')
-      .header('cookie', `token=${token}`)
+    const response = await client.get('/user/food_packages').header('cookie', `token=${token}`)
 
     response.assertStatus(200)
     response.assertBodyContains([
@@ -111,18 +106,13 @@ test.group('Food Packages', () => {
       .header('cookie', `token=${token}`)
 
     response.assertStatus(200)
-    response.assertBodyContains([
-      { id: 1 },
-      { id: 2 },
-    ])
+    response.assertBodyContains([{ id: 1 }, { id: 2 }])
 
     const updatedResponse = await client
       .get('/user/food_packages')
       .header('cookie', `token=${token}`)
 
-    updatedResponse.assertBodyContains([
-      { id: createdPackageId, name: 'Edytowana Paczka Testowa' },
-    ])
+    updatedResponse.assertBodyContains([{ id: createdPackageId, name: 'Edytowana Paczka Testowa' }])
   })
 
   test('remove a product from the food package | id: PT-Pckg-4', async ({ client }) => {
@@ -142,13 +132,9 @@ test.group('Food Packages', () => {
   })
 
   test('delete the food package | id: PT-Pckg-5', async ({ client }) => {
-    await client
-      .delete(`/food_packages/${createdPackageId}`)
-      .header('cookie', `token=${token}`)
+    await client.delete(`/food_packages/${createdPackageId}`).header('cookie', `token=${token}`)
 
-    const getResponse = await client
-      .get('/user/food_packages')
-      .header('cookie', `token=${token}`)
+    const getResponse = await client.get('/user/food_packages').header('cookie', `token=${token}`)
 
     getResponse.assertBodyNotContains({
       id: createdPackageId,

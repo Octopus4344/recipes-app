@@ -124,7 +124,8 @@ export default class RecipesController {
     }
     const amatorsWhoLikeThisRecipe = await recipe.related('favourites').query()
     for (const amator of amatorsWhoLikeThisRecipe) {
-      const user = await Amator.find(amator.id)
+
+      const user = await Amator.find(amator.amatorId)
       if (user) {
         const userNutritionalProfiles = await user.related('nutritionalProfiles').query()
         const userCategories = userNutritionalProfiles.map((profile) => profile.categoryId)

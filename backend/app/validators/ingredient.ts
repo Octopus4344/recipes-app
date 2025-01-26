@@ -1,7 +1,6 @@
 import vine from '@vinejs/vine'
 
-
-const ingredientValidatorSchema =   vine.object({
+const ingredientValidatorSchema = vine.object({
   name: vine.string(),
   calorificValue: vine.number(),
   recipeId: vine.number(),

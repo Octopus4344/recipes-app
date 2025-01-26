@@ -57,22 +57,18 @@ test.group('Favourites', () => {
     )
   })
 
-
   test('remove nonexistent favourite | id:PT-fav4', async ({ assert, client }) => {
-
     const myFavouritesResponse = await client
-    .get('user/favourite')
-    .header('cookie', `token=${token}`)
-
+      .get('user/favourite')
+      .header('cookie', `token=${token}`)
 
     const deleteResponse = await client
       .delete('user/favourite?recipeId=3')
       .header('cookie', `token=${token}`)
 
     const myFavouritesResponseAfterDelete = await client
-    .get('user/favourite')
-    .header('cookie', `token=${token}`)
-
+      .get('user/favourite')
+      .header('cookie', `token=${token}`)
 
     assert.equal(
       myFavouritesResponse.body().length - myFavouritesResponseAfterDelete.body().length,

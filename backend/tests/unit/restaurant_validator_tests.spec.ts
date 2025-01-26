@@ -11,10 +11,10 @@ test.group('Restaurant validator tests', () => {
       streetNumber: '12A',
       userId: 1,
       description: 'Klimatyczna restauracja z tradycyjną kuchnią polską.',
-    };
+    }
 
-    assert.isNull((await updateRestaurantValidator.tryValidate(restaurant))[0]);
-  });
+    assert.isNull((await updateRestaurantValidator.tryValidate(restaurant))[0])
+  })
 
   test('validate data without optional fields', async ({ assert }) => {
     const restaurant = {
@@ -23,20 +23,20 @@ test.group('Restaurant validator tests', () => {
       city: 'Kraków',
       userId: 2,
       description: null,
-    };
+    }
 
-    assert.isNull((await updateRestaurantValidator.tryValidate(restaurant))[0]);
-  });
+    assert.isNull((await updateRestaurantValidator.tryValidate(restaurant))[0])
+  })
 
   test('validate data missing required fields', async ({ assert }) => {
     const restaurant = {
       website: 'https://example.com',
       street: 'Nowy Świat',
       userId: 3,
-    };
+    }
 
-    assert.isNotNull((await updateRestaurantValidator.tryValidate(restaurant))[0]);
-  });
+    assert.isNotNull((await updateRestaurantValidator.tryValidate(restaurant))[0])
+  })
 
   test('validate data with invalid field types', async ({ assert }) => {
     const restaurant = {
@@ -47,10 +47,10 @@ test.group('Restaurant validator tests', () => {
       streetNumber: true, // Invalid type
       userId: 'user', // Invalid type
       description: null,
-    };
+    }
 
-    assert.isNotNull((await updateRestaurantValidator.tryValidate(restaurant))[0]);
-  });
+    assert.isNotNull((await updateRestaurantValidator.tryValidate(restaurant))[0])
+  })
 
   test('validate data with optional fields as null', async ({ assert }) => {
     const restaurant = {
@@ -61,8 +61,8 @@ test.group('Restaurant validator tests', () => {
       streetNumber: null,
       userId: 6,
       description: null,
-    };
+    }
 
-    assert.isNull((await updateRestaurantValidator.tryValidate(restaurant))[0]);
-  });
-});
+    assert.isNull((await updateRestaurantValidator.tryValidate(restaurant))[0])
+  })
+})
