@@ -30,7 +30,7 @@ test.group('Authentication', () => {
   })
 })
 
-test.group('Recipes - Categories and Products', () => {
+test.group('Recipes', () => {
   test('create recipe | id: PT-Rec-1', async ({ client, assert }) => {
     // Create a new recipe
     const recipeData = {
@@ -232,7 +232,7 @@ test.group('Recipes - Categories and Products', () => {
   })
 
 
-  test('update a recipe (lacking data) | id: PT-Rec-6', async ({ client, assert }) => {
+  test('update a recipe (lacking data) | id: PT-Rec-6', async ({ client }) => {
     const updatedData = {
       name: null,
       isProfessional: false,
@@ -249,7 +249,7 @@ test.group('Recipes - Categories and Products', () => {
 
   })
 
-  test('remove categories from recipe', async ({ client, assert }) => {
+  test('remove categories from recipe | Additional functional tests', async ({ client, assert }) => {
     // Create a new recipe
     const recipeData = {
       name: 'Przepis z kategoriami',
@@ -302,7 +302,7 @@ test.group('Recipes - Categories and Products', () => {
 
 
 
-  test('get recipe ingredients (and check product inside)', async ({ client, assert }) => {
+  test('get recipe ingredients (and check product inside) | Additional functional tests', async ({ client, assert }) => {
     // Create a new ingredient with a product
     const ingredientData = {
       name: 'Inny składnik',
