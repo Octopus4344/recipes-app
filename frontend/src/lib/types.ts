@@ -26,22 +26,23 @@ interface Restaurant {
 }
 
 export interface Recipe {
-  id: 1,
+  id: 1;
   name: string;
   description: string;
-  preparationTime: number,
-  difficultyLevel: number,
-  isProfessional: boolean,
-  imageUrl: string,
-  userId: number,
-  isActive?: boolean,
-  createdAt?: string,
-  updatedAt?: string,
-  isFavourite?: boolean,
-  averageRating?: number,
-  tags?: Category[],
-  ingredients?: Ingredient[]
-  reviews?: Review[]
+  preparationTime: number;
+  difficultyLevel: number;
+  isProfessional: boolean;
+  imageUrl: string;
+  userId: number;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  isFavourite?: boolean;
+  averageRating?: number;
+  tags?: Category[];
+  ingredients?: Ingredient[];
+  reviews?: Review[];
+  products?: Product[];
 }
 
 export interface Category {
@@ -52,10 +53,10 @@ export interface Category {
 }
 
 export interface Ingredient {
-  name: string
-  id: number,
-  calorificValue: number,
-  product?: Product
+  name: string;
+  id: number;
+  calorificValue: number;
+  product?: Product;
 }
 
 export interface Review {
@@ -76,7 +77,7 @@ export interface Product {
   ingredients?: Ingredient[];
 }
 
-export interface FoodPackage{
+export interface FoodPackage {
   id: string;
   name: string;
   products: Product[];

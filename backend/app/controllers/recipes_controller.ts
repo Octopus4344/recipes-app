@@ -5,6 +5,8 @@ import Amator from '#models/amator'
 import Notification from '#models/notification'
 import Ingredient from '#models/ingredient'
 import Category from '#models/category'
+import Product from '#models/product'
+import FoodProducer from '#models/food_producer'
 
 export default class RecipesController {
   async index(_ctx: HttpContext) {
@@ -57,12 +59,23 @@ export default class RecipesController {
       : 0
 
     const ingredients = await Ingredient.query().where('recipeId', recipe.id)
+    const products = []
+    for (const ingredient of ingredients) {
+      const product = await ingredient.related('product').query().first()
+      if (product?.producerId) {
+        const productProducer = await FoodProducer.query().where('id', product?.producerId).first()
+        if (product) {
+          products.push({ ...product.serialize(), producer: productProducer })
+        }
+      }
+    }
 
     if (!amator) {
       const recipeWithDetails = {
         ...recipe.serialize(),
         ingredients: ingredients.map((ingredient) => ingredient.serialize()),
         averageRating: avg || 0,
+        products: products,
       }
       return recipeWithDetails
     }
@@ -78,6 +91,7 @@ export default class RecipesController {
       isFavourite: favouriteRecipesIds.includes(recipe.id),
       ingredients: ingredients.map((ingredient) => ingredient.serialize()),
       averageRating: avg || 0,
+      products: products,
     }
     return recipeWithDetails
   }

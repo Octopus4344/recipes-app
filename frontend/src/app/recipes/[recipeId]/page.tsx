@@ -13,20 +13,21 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { ReviewDialog } from "@/components/review-dialog";
 import { useUser } from "@/context/user-context";
-import { object } from "prop-types";
-
 
 export default function RecipeDetailsPage() {
   const recipeId = useParams().recipeId;
   const { user } = useUser();
 
-  const { data: recipe, isLoading: isLoading, isError: isError } = useQuery<Recipe>({
+  const {
+    data: recipe,
+    isLoading: isLoading,
+    isError: isError,
+  } = useQuery<Recipe>({
     queryKey: ["recipes"],
     queryFn: async () => {
       return await fetchData(`recipes/${recipeId}`, "GET");
-    }
+    },
   });
-
   if (isError) {
     return <p>Error</p>;
   }
@@ -34,81 +35,100 @@ export default function RecipeDetailsPage() {
   if (isLoading || !recipe) {
     return <div>Loading...</div>;
   }
-
   return (
     <ProtectedRoute>
-      <div className="flex py-8 px-48 space-x-24 items-start justify-center">
+      <div className="flex items-start justify-center space-x-24 px-48 py-8">
         <div className="flex flex-col">
-          <Link href="/" className="flex w-full text-gray-600 py-3">
+          <Link href="/" className="flex w-full py-3 text-gray-600">
             <ArrowLeftIcon />
             <p>Back</p>
           </Link>
-          {recipe.isProfessional &&
-            <div
-              className="flex rounded-full text-xs bg-gray-400 text-white p-1 max-w-32 space-x-1.5 my-1.5 items-center justify-center">
+          {recipe.isProfessional && (
+            <div className="my-1.5 flex max-w-32 items-center justify-center space-x-1.5 rounded-full bg-gray-400 p-1 text-xs text-white">
               <Star fill="white" color="white" size={10} />
               <p>Professional</p>
             </div>
-          }
-          <p className="text-3xl font-bold text-transform: uppercase overflow-clip w-[300px]">{recipe.name}</p>
-          <div className="flex items-center justify-between w-full">
-            <p className="text-primary font-bold">by {recipe.userId}</p>
-            <Rating className="inline-flex" size={25} readonly={true} initialValue={recipe.averageRating} />
+          )}
+          <p className="text-transform: w-[300px] overflow-clip text-3xl font-bold uppercase">
+            {recipe.name}
+          </p>
+          <div className="flex w-full items-center justify-between">
+            <p className="font-bold text-primary">by {recipe.userId}</p>
+            <Rating
+              className="inline-flex"
+              size={25}
+              readonly={true}
+              initialValue={recipe.averageRating}
+            />
           </div>
-          <div className="flex items-center justify-between w-full mt-8">
-            {recipe.tags &&
-              <TagList tags={recipe.tags} rows={recipe.tags.length / 3} />}
+          <div className="mt-8 flex w-full items-center justify-between">
+            {recipe.tags && (
+              <TagList tags={recipe.tags} rows={recipe.tags.length / 3} />
+            )}
           </div>
-          {user?.role === "amator" &&
-            <div
-              className="flex items-center justify-center w-full bg-gray-500 rounded-lg p-4 text-white space-x-4 max-w-64 my-4">
+          {user?.role === "amator" && (
+            <div className="my-4 flex w-full max-w-64 items-center justify-center space-x-4 rounded-lg bg-gray-500 p-4 text-white">
               <FavouriteToggle recipe={recipe} color={"white"} />
               {!recipe.isFavourite ? (
-                <p>Add to favourites</p>) : (
+                <p>Add to favourites</p>
+              ) : (
                 <p>Remove from favourites</p>
               )}
-            </div>}
-          {user?.role === "amator" &&
-            <ReviewDialog id={recipe.id} />}
+            </div>
+          )}
+          {user?.role === "amator" && <ReviewDialog id={recipe.id} />}
 
-          <div className="flex space-x-1.5 mt-8">
+          <div className="mt-8 flex space-x-1.5">
             <p className="font-light text-gray-600">Preparation time: </p>
-            <p className="font-bold text-gray-500">{recipe.preparationTime} min</p>
+            <p className="font-bold text-gray-500">
+              {recipe.preparationTime} min
+            </p>
           </div>
           <div className="flex space-x-1.5">
             <p className="font-light text-gray-600">Difficulty level: </p>
             <p className="font-bold text-gray-500">{recipe.difficultyLevel}</p>
           </div>
-          <p className="font-bold text-gray-600 text-lg pt-4">Ingredients</p>
-          <ScrollArea className="pt-1 text-gray-600 h-[80px]">
+          <p className="pt-4 text-lg font-bold text-gray-600">Ingredients</p>
+          <ScrollArea className="h-[80px] pt-1 text-gray-600">
             <ol>
               {recipe.ingredients?.map((ingredient) => (
-                  <li key={ingredient.id}>
-                    {ingredient.name} - {ingredient.calorificValue} kcal
-                  </li>
-                )
-              )}
+                <li key={ingredient.id}>
+                  {ingredient.name} - {ingredient.calorificValue} kcal
+                </li>
+              ))}
             </ol>
           </ScrollArea>
+          <p className="pt-4 text-lg font-bold text-gray-600">Products</p>
+          {recipe.products?.map((product) => {
+            return (
+              <div key={product.name}>
+                {product.name}({product.producer?.name})
+              </div>
+            );
+          })}
         </div>
         <div className="flex flex-col">
-          <Image src={recipe.imageUrl || "/placeholder.svg"} alt={"Image of the recipe"} width={600} height={400} style={{ objectFit: "cover" }} />
-          <ScrollArea className="pt-1 text-gray-600 h-[80px]">
+          <Image
+            src={recipe.imageUrl || "/placeholder.svg"}
+            alt={"Image of the recipe"}
+            width={600}
+            height={400}
+            style={{ objectFit: "cover" }}
+          />
+          <ScrollArea className="h-[80px] pt-1 text-gray-600">
             <div>{recipe.description}</div>
           </ScrollArea>
-          <p className="font-bold text-gray-600 text-lg py-4">Reviews</p>
-          <ScrollArea className="pt-1 text-gray-600 h-[150px]">
+          <p className="py-4 text-lg font-bold text-gray-600">Reviews</p>
+          <ScrollArea className="h-[150px] pt-1 text-gray-600">
             <ol>
               {recipe.reviews?.map((review) => (
-                  <li key={review.id}>
-                    <ReviewComponent review={review} />
-                  </li>
-                )
-              )}
+                <li key={review.id}>
+                  <ReviewComponent review={review} />
+                </li>
+              ))}
             </ol>
           </ScrollArea>
         </div>
-
       </div>
     </ProtectedRoute>
   );
@@ -116,14 +136,24 @@ export default function RecipeDetailsPage() {
 
 function ReviewComponent({ review }: { review: Review }) {
   return (
-    <div className="flex space-x-1.5 ">
-      <div className="flex space-x-3 justify-center items-start">
-        <Image alt="Profile photo" src="/profile-pic.svg" width={60} height={60} />
+    <div className="flex space-x-1.5">
+      <div className="flex items-start justify-center space-x-3">
+        <Image
+          alt="Profile photo"
+          src="/profile-pic.svg"
+          width={60}
+          height={60}
+        />
         <div className="flex flex-col">
           <p className="font-bold">{review.amatorId}</p>
-          <Rating className="inline-flex" size={25} readonly={true} initialValue={review.grade} />
+          <Rating
+            className="inline-flex"
+            size={25}
+            readonly={true}
+            initialValue={review.grade}
+          />
         </div>
-        <ScrollArea className="pt-1 text-gray-600 h-[100px]">
+        <ScrollArea className="h-[100px] pt-1 text-gray-600">
           <div>{review.review}</div>
         </ScrollArea>
       </div>
