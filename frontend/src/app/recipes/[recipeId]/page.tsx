@@ -37,7 +37,7 @@ export default function RecipeDetailsPage() {
   }
   return (
     <ProtectedRoute>
-      <div className="flex items-start justify-center space-x-24 px-48 py-8">
+      <div className="flex px-48 space-x-24 items-start justify-center">
         <div className="flex flex-col">
           <Link href="/" className="flex w-full py-3 text-gray-600">
             <ArrowLeftIcon />

@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
     <QueryProvider>
       <UserProvider>
-      <body className="mt-24"
+      <body className="mt-32"
       >
       <Navbar />
         {children}

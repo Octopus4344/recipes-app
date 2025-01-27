@@ -33,7 +33,7 @@ export function RecipeOfTheDay({ recipe }: { recipe: Recipe }) {
           {user?.role === "amator" && <FavouriteToggle recipe={recipe} />}
         </div>
       </div>
-      <Image src={recipe.imageUrl || "/placeholder.svg"} alt={"Image of the recipe"} width={400} height={400} style={{ objectFit: "cover" }} />
+      <Image src={recipe.imageUrl || "/placeholder.svg"} alt={"Image of the recipe"} width={400} height={400} style={{ objectFit: "cover" }} className="rounded-xl" />
     </div>
   );
 }
