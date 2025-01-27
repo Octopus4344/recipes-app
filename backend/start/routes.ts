@@ -59,6 +59,7 @@ router.post('user/register', [AuthController, 'register']).use(middleware.guest(
 router
   .post('food_producer/register', [AuthController, 'registerFoodProducer'])
   .use(middleware.guest())
+router.post('restaurant/register', [AuthController, 'registerRestaurant']).use(middleware.guest())
 router.delete('user/logout', [AuthController, 'destroy']).use(middleware.ourAuth())
 
 //Review

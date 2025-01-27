@@ -187,6 +187,18 @@ export default class RecipesController {
   async update({ request, params }: HttpContext) {
     const recipe = await Recipe.findOrFail(params.id)
     const payload = await request.validateUsing(updateRecipeValidator)
+    if (recipe.isActive !== payload.isActive) {
+      const amatorsWhoLikeThisRecipe = await recipe.related('favourites').query()
+      for (const amator of amatorsWhoLikeThisRecipe) {
+        const user = await Amator.find(amator.amatorId)
+        if (user) {
+          await Notification.create({
+            content: `Recipe ${recipe.name} has been ${payload.isActive ? 'activated' : 'deactivated'}.`,
+            userId: user?.userId,
+          })
+        }
+      }
+    }
     recipe.merge(payload)
     await recipe.save()
     return { message: 'Recipe updated.', recipe }

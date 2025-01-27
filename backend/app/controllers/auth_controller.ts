@@ -7,6 +7,7 @@ import { foodProducerRegisterValidator } from '#validators/food_producer_registe
 import { HttpContext } from '@adonisjs/core/http'
 import hash from '@adonisjs/core/services/hash'
 import assert from 'node:assert'
+import { updateRestaurantValidator } from '#validators/restaurant'
 
 export default class AuthController {
   async store({ request, response, auth }: HttpContext) {
@@ -83,6 +84,26 @@ export default class AuthController {
     })
 
     return response.created({ user, foodProducer })
+  }
+
+  async registerRestaurant({ request, response }: HttpContext) {
+    const payload = await request.validateUsing(updateRestaurantValidator)
+    const hashedPassword = await hash.make(payload.password)
+    const userToCreate = {
+      username: payload.username,
+      email: payload.email,
+      password: hashedPassword,
+    }
+    const user = await User.create(userToCreate)
+    const restaurant = await Restaurant.create({
+      name: payload.name,
+      city: payload.city,
+      street: payload.street,
+      streetNumber: payload.streetNumber ? Number.parseInt(payload.streetNumber, 10) : undefined,
+      userId: user.id,
+    })
+
+    return response.created({ user, restaurant })
   }
 
   async destroy({ response }: HttpContext) {
