@@ -11,12 +11,25 @@ export default class RecipesController {
     return Recipe.query()
   }
 
+  /**
+   * Creates and saves new recipe, before that checks  if the data is correct.
+   *
+   * @param request contains the payload with all the new recipe data
+   * @returns the new recipe data and appropriate message or validate error.
+   */
   async store({ request }: HttpContext) {
     const payload = await request.validateUsing(updateRecipeValidator)
     const recipe = await Recipe.create(payload)
     return { message: 'Recipe created.', recipe }
   }
 
+  /**
+   * Shows data of a chosen recipe.
+   *
+   * @param params contains the recipe id
+   * @param auth contains the user's token
+   * @returns data of a chosen recipe.
+   */
   async show({ params, auth }: HttpContext) {
     const userId = auth.user?.id
     if (userId === undefined) {
@@ -69,11 +82,23 @@ export default class RecipesController {
     return recipeWithDetails
   }
 
+  /**
+   * Shows tags of a chosen recipe.
+   *
+   * @param params contains the recipe id
+   * @returns tags of a chosen recipe.
+   */
   async getRecipeTags({ params }: HttpContext) {
     const recipe = await Recipe.findOrFail(params.id)
     return { tags: await recipe.related('tags').query(), recipe }
   }
 
+  /**
+   * Shows all categories with a flag isAdded, that informs if a category is connected with chosen recipe.
+   *
+   * @param params contains the recipe id
+   * @returns all of the categories.
+   */
   async getTags({ params }: HttpContext) {
     const recipe = await Recipe.findOrFail(params.id)
     const related = await recipe
@@ -92,6 +117,13 @@ export default class RecipesController {
     )
   }
 
+  /**
+   * Creates a connection between a category and a recipe.
+   *
+   * @param params contains the recipe id
+   * @param request contains the payload with tag id.
+   * @returns the message informing about an error or success.
+   */
   async addTagsToRecipe({ request, params }: HttpContext) {
     const recipe = await Recipe.findOrFail(params.id)
     const payload = request.only(['categories'])
@@ -124,7 +156,6 @@ export default class RecipesController {
     }
     const amatorsWhoLikeThisRecipe = await recipe.related('favourites').query()
     for (const amator of amatorsWhoLikeThisRecipe) {
-
       const user = await Amator.find(amator.amatorId)
       if (user) {
         const userNutritionalProfiles = await user.related('nutritionalProfiles').query()
@@ -146,6 +177,13 @@ export default class RecipesController {
     return { message: 'Tags removed from recipe.' }
   }
 
+  /**
+   * Updates data of a chosen recipe.
+   *
+   * @param params contains the recipe id
+   * @param request contains new data.
+   * @returns the message informing about error or success, on success also new data.
+   */
   async update({ request, params }: HttpContext) {
     const recipe = await Recipe.findOrFail(params.id)
     const payload = await request.validateUsing(updateRecipeValidator)
@@ -160,6 +198,12 @@ export default class RecipesController {
     return { message: 'Recipe deleted.' }
   }
 
+  /**
+   * Shows all user's recipes
+   *
+   * @param auth contains the user's token
+   * @returns the message informing about error or success, on success also recipes data.
+   */
   async getUserRecipes({ auth }: HttpContext) {
     const userId = auth.user?.id
     if (userId === undefined) {
@@ -180,7 +224,12 @@ export default class RecipesController {
     )
     return recipesWithDetails
   }
-
+  /**
+   * Shows recipes, if user role is amator filtered based on the user's nutritional profile
+   *
+   * @param auth contains the user's token
+   * @returns the message informing about error or success, on success also recipes data.
+   */
   async getRecipes({ auth }: HttpContext) {
     const userId = auth.user?.id
     if (userId === undefined) {
@@ -271,20 +320,36 @@ export default class RecipesController {
 
     return recipesWithFavouriteFlag.sort((a, b) => b.averageRating - a.averageRating)
   }
-
+  /**
+   * Adds an ingredient to a chosen recipes.
+   *
+   @param params contains the recipe id
+   @param request contains the payload with ingredient data.
+   * @returns the message informing about error or success.
+   */
   async addIngredientToRecipe({ request, params }: HttpContext) {
     const recipe = await Recipe.findOrFail(params.id)
     const payload = request.only(['name', 'calorific_value'])
     const ingredient = await Ingredient.create({ ...payload, recipeId: recipe.id })
     return { message: 'Ingredient added to recipe.', ingredient }
   }
-
+  /**
+   * Deletes a connection between chosen ingredient and its recipe.
+   *
+   @param params contains the ingredient id
+   * @returns the message informing about error or success.
+   */
   async removeIngredientFromRecipe({ params }: HttpContext) {
     const ingredient = await Ingredient.findOrFail(params.id)
     await ingredient.delete()
     return { message: 'Ingredient removed from recipe.' }
   }
-
+  /**
+   * Shows all the recipe's ingredients.
+   *
+   @param params contains the recipe id
+   * @returns the message informing about error or data.
+   */
   async getRecipeIngredients({ params }: HttpContext) {
     const recipe = await Recipe.findOrFail(params.id)
     const ingredients = await Ingredient.query().where('recipeId', recipe.id)
