@@ -35,6 +35,7 @@ export default function RecipeDetailsPage() {
   if (isLoading || !recipe) {
     return <div>Loading...</div>;
   }
+
   return (
     <ProtectedRoute>
       <div className="flex px-48 space-x-24 items-start justify-center">
