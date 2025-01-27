@@ -13,6 +13,7 @@ const FoodPackagesProductsController = () =>
 const AuthController = () => import('#controllers/auth_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const NotificationController = () => import('#controllers/notification_controller')
 const IngredientProductController = () => import('#controllers/ingredient_product_controller')
 const ReviewsController = () => import('#controllers/reviews_controller')
 const UsersController = () => import('#controllers/users_controller')
@@ -86,4 +87,7 @@ router.get('/user/nutritional_profiles', [UsersController, 'getProfiles']).use(m
 router.post('/user/nutritional_profiles', [UsersController, 'addProfile']).use(middleware.ourAuth())
 router
   .delete('/user/nutritional_profiles', [UsersController, 'removeProfile'])
+  .use(middleware.ourAuth())
+router
+  .get('/user/notifications', [NotificationController, 'getUserNotifications'])
   .use(middleware.ourAuth())

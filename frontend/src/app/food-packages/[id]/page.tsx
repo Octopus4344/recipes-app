@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { fetchData } from "@/lib/api";
@@ -9,6 +10,17 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import React from "react";
 
+const TAGS = [
+  "Vegan",
+  "Lactose free",
+  "Halal",
+  "Nut free",
+  "Gluten free",
+  "Low carb",
+  "Sugar free",
+  "High fiber",
+];
+
 export default function FoodPackagesPage() {
   const { id } = useParams<{ id: string }>();
   const { value: products, setNewValue: setProducts } = useLocalStorage<
@@ -16,6 +28,18 @@ export default function FoodPackagesPage() {
   >(
     `food-package-${id}`,
     React.useMemo(() => [], []),
+  );
+  const { value: tags, setNewValue: setTags } = useLocalStorage<
+    { tag: string; isChecked: boolean }[]
+  >(
+    `tags-${id}`,
+    React.useMemo(
+      () =>
+        TAGS.map((tag) => {
+          return { tag: tag, isChecked: false };
+        }),
+      [],
+    ),
   );
   const packageName = React.useRef<HTMLInputElement | null>(null);
   const onProductChange = (id: string, value: string) => {
@@ -95,6 +119,29 @@ export default function FoodPackagesPage() {
         >
           Add product
         </Button>
+        <h2 className="mt-4 text-2xl">Tags</h2>
+        <div className="flex flex-col gap-4">
+          {tags.map((tag) => {
+            return (
+              <div key={tag.tag} className="flex items-center gap-2">
+                <Checkbox
+                  id={tag.tag}
+                  checked={tag.isChecked}
+                  onCheckedChange={() => {
+                    const newTags = tags.map((t) => {
+                      if (t.tag === tag.tag) {
+                        return { ...t, isChecked: !t.isChecked };
+                      }
+                      return t;
+                    });
+                    setTags(newTags);
+                  }}
+                />
+                <Label htmlFor={tag.tag}>{tag.tag}</Label>
+              </div>
+            );
+          })}
+        </div>
         <div className="mt-8 flex items-center gap-4">
           <Button asChild>
             <Link href={"/food-packages"}>Cancel</Link>

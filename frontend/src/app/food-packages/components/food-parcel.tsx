@@ -42,8 +42,9 @@ export const FoodParcel = ({
       mutation.mutate();
   };
   const numberOfProducts = JSON.parse(
-    localStorage.getItem(`food-package-${id}`),
+    localStorage.getItem(`food-package-${id}`) || "[]",
   )?.length;
+  const tags = JSON.parse(localStorage.getItem(`tags-${id}`) || "[]");
   return (
     <div className="flex h-[150px] w-[350px] flex-col justify-between rounded-lg border border-gray-200 p-4">
       <div className="flex justify-between">
@@ -70,6 +71,20 @@ export const FoodParcel = ({
         </DropdownMenu>
       </div>
       <h4>Products: {numberOfProducts ?? 0}</h4>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {tags.map((tag: { tag: string; isChecked: boolean }) => {
+          return (
+            tag.isChecked && (
+              <span
+                key={tag.tag}
+                className="rounded-lg bg-gray-200 p-1 text-xs"
+              >
+                {tag.tag}
+              </span>
+            )
+          );
+        })}
+      </div>
     </div>
   );
 };
