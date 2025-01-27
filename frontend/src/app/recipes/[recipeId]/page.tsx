@@ -13,6 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { ReviewDialog } from "@/components/review-dialog";
 import { useUser } from "@/context/user-context";
+import { object } from "prop-types";
 
 
 export default function RecipeDetailsPage() {
@@ -36,7 +37,7 @@ export default function RecipeDetailsPage() {
 
   return (
     <ProtectedRoute>
-      <div className="flex py-8 px-24 space-x-8 items-start justify-between">
+      <div className="flex py-8 px-48 space-x-24 items-start justify-center">
         <div className="flex flex-col">
           <Link href="/" className="flex w-full text-gray-600 py-3">
             <ArrowLeftIcon />
@@ -91,12 +92,12 @@ export default function RecipeDetailsPage() {
           </ScrollArea>
         </div>
         <div className="flex flex-col">
-          <Image src={recipe.imageUrl || "/placeholder.svg"} alt={"Image of the recipe"} width={600} height={400} />
+          <Image src={recipe.imageUrl || "/placeholder.svg"} alt={"Image of the recipe"} width={600} height={400} style={{ objectFit: "cover" }} />
           <ScrollArea className="pt-1 text-gray-600 h-[80px]">
             <div>{recipe.description}</div>
           </ScrollArea>
           <p className="font-bold text-gray-600 text-lg py-4">Reviews</p>
-          <ScrollArea className="pt-1 text-gray-600 h-[80px]">
+          <ScrollArea className="pt-1 text-gray-600 h-[150px]">
             <ol>
               {recipe.reviews?.map((review) => (
                   <li key={review.id}>

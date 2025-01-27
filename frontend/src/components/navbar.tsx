@@ -53,7 +53,7 @@ export function Navbar() {
               height={60}
             />
           </Link>
-          <div className="left-3 flex flex-wrap items-center space-x-10 xl:space-x-24">
+          <div className="left-3 flex flex-wrap items-center space-x-10 xl:space-x-14">
             <Link className={isActive("/")} href="/">
               Home
             </Link>

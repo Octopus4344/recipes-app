@@ -182,7 +182,7 @@ function RecipeDataEditor({ recipe, setRecipe, setStep, edit }: {
   };
 
   return (
-    <div className="flex py-8 px-24 space-x-8 space-y-4 items-start justify-between">
+    <div className="flex py-8 px-36 space-x-16 space-y-4 items-start justify-center">
       <div className="flex flex-col">
         <Link href="/my-recipes" className="flex w-full text-gray-600 py-3">
           <ArrowLeftIcon />

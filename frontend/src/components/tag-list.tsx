@@ -15,7 +15,7 @@ export function TagList({ tags, rows }: { tags: Category[], rows: number }) {
       {groupedTags.map((row, rowIndex) => (
         <div key={rowIndex} className="flex justify-start items-center w-full space-x-1.5 overflow-hidden">
           {row.map((tag) => (
-            <div key={tag.id} className="bg-primary text-white p-1.5 rounded-lg line-clamp-2">
+            <div key={tag.id} className="bg-primary text-white p-1.5 rounded-lg line-clamp-1">
               {tag.name}
             </div>
           ))}
@@ -23,5 +23,4 @@ export function TagList({ tags, rows }: { tags: Category[], rows: number }) {
       ))}
     </div>
   )
-
 }

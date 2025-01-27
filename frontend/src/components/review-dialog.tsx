@@ -65,7 +65,7 @@ export function ReviewDialog({ id }: { id: number }) {
       return
     }
     if(user?.id && id) {
-      setReview((prev) => ({...prev, recipeId: id.toString(), amatorId: user.id.toString()}));
+      setReview((prev) => ({...prev, recipeId: id.toString(), amatorId: user.amatorData?.id.toString()}));
     }
     mutation.mutate()
 

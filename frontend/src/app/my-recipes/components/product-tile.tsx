@@ -40,7 +40,7 @@ export function ProductTile({ product, ingredients, handleAdd }: {
       <p className="text-xl font-bold line-clamp-2">{product.name}</p>
       <AlertDialog>
         <AlertDialogTrigger>
-          <Button>Add</Button>
+          <div className="bg-primary px-4 py-1.5 rounded-lg mt-3">Add</div>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogTitle>Connect product with an ingredient</AlertDialogTitle>
