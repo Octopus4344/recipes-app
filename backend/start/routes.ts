@@ -50,6 +50,7 @@ router
 router.post('/food_packages', [FoodPackagesController, 'store']).use(middleware.ourAuth())
 router.delete('/food_packages/:id', [FoodPackagesController, 'destroy']).use(middleware.ourAuth())
 router.put('/food_packages/:id', [FoodPackagesController, 'update']).use(middleware.ourAuth())
+router.get('/food_packages/:id', [FoodPackagesController, 'show']).use(middleware.ourAuth())
 
 //User interactions
 router.post('user/login', [AuthController, 'store']).use(middleware.guest())

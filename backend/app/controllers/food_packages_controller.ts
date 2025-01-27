@@ -16,6 +16,12 @@ export default class FoodPackagesController {
     return foodPackages
   }
 
+  async show({ params }: HttpContext) {
+    const foodPackageId = params.id
+    const foodPackage = await FoodPackage.query().where('id', foodPackageId)
+    return foodPackage
+  }
+
   async store({ request, response, auth }: HttpContext) {
     const userId = auth.user?.id
     if (userId === undefined) {

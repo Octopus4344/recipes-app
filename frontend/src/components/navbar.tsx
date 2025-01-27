@@ -52,10 +52,11 @@ export function Navbar() {
                 : user?.role === "cook" ? (
                     <Link className={isActive("/chat")} href="/chat">Chat with an amateur</Link>
                   )
-                  : user?.role === "foodProducer" ? (
+                  : user?.role === "food_producer" ? (
                     <Link className={isActive("/my-products")} href="/my-products">My products</Link>
                   ) : <Link className={isActive("/chat")} href="/chat">Chat with the chef</Link>
             }
+            {user?.role === "food_producer" && <Link className={isActive("/food-packages")} href="/food-packages">Food packages</Link>}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Image src="/profile-pic.svg" alt="Profile picture" className="cursor-pointer" width={50} height={50} />

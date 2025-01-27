@@ -2,7 +2,7 @@ export interface User {
   id: string;
   username: string;
   email: string;
-  role: "amator" | "restaurant" | "cook" | "foodProducer";
+  role: "amator" | "restaurant" | "cook" | "food_producer";
   amatorData?: Amateur;
   foodProducerData?: FoodProducer;
   restaurantData?: Restaurant;
@@ -74,4 +74,10 @@ export interface Product {
   producer?: FoodProducer;
   isActive: boolean;
   ingredients?: Ingredient[];
+}
+
+export interface FoodPackage{
+  id: string;
+  name: string;
+  products: Product[];
 }
