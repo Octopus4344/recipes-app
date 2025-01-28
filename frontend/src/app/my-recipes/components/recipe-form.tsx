@@ -145,7 +145,6 @@ function RecipeDataEditor({ recipe, setRecipe, setStep, edit }: {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["recipe"] });
-      console.log(data);
       setRecipe(data.recipe);
       setStep(2);
     },
@@ -196,7 +195,7 @@ function RecipeDataEditor({ recipe, setRecipe, setStep, edit }: {
               <Input
                 id={"name"}
                 name={"name"}
-                value={recipe.name}
+                value={recipe.name || ""}
                 type="text"
                 required={true}
                 onChange={(e) => setRecipe((prev: Recipe) => ({ ...prev, name: e.target.value }))}
@@ -207,7 +206,7 @@ function RecipeDataEditor({ recipe, setRecipe, setStep, edit }: {
               <Textarea
                 id={"description"}
                 name={"description"}
-                value={recipe.description}
+                value={recipe.description || ""}
                 required={true}
                 onChange={(e) => setRecipe((prev: Recipe) => ({ ...prev, description: e.target.value }))}
               />
@@ -234,7 +233,7 @@ function RecipeDataEditor({ recipe, setRecipe, setStep, edit }: {
               <Input
                 id={"preparation"}
                 name={"preparation"}
-                value={recipe.preparationTime}
+                value={recipe.preparationTime || 0}
                 type={"time"}
                 required={true}
                 onChange={(e) => {
@@ -258,10 +257,10 @@ function RecipeDataEditor({ recipe, setRecipe, setStep, edit }: {
           <Input
             id={"imageUrl"}
             name={"imageUrl"}
-            value={recipe.imageUrl}
+            value={recipe.imageUrl || ""}
             placeholder={"Photo url..."}
             type={"url"}
-            required={true}
+            required={false}
             onChange={(e) => setRecipe((prev: Recipe) => ({ ...prev, imageUrl: e.target.value }))
             }
           />
